@@ -46,8 +46,17 @@ class SudokuUserState: ObservableObject, Codable {
                 if (puzzleValue > 9) {
                     self.boardState[index] = puzzleValue - 9
                 }
+                self.selectedCellIndex = firstEditableCellIndex
             }
         }
+    }
+    
+    var firstEditableCellIndex: Int? {
+        puzzle.cells.firstIndex { $0 <= 9 }
+    }
+    var isSelectionEditable: Bool {
+        guard let selectedCellIndex else { return false }
+        return puzzle.cells[selectedCellIndex] <= 9
     }
     
     private func updateCell(_ index: Int, with value: Int?) {

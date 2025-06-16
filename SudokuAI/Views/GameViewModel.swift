@@ -10,7 +10,10 @@ class GameViewModel: ObservableObject {
     }
     
     func userGuess(guess: Int) {
-        userState.guess(guess, at: 0)
+        guard let index = userState.selectedCellIndex else { return }
+        if userState.isSelectionEditable {
+            userState.guess(guess, at: index)
+        }
     }
     
     func boardTap(index: Int) {
