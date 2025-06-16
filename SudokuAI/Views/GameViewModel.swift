@@ -28,6 +28,19 @@ class GameViewModel: ObservableObject {
     }
     
     func boardTap(index: Int) {
-        userState.selectedCellIndex = index
+        if userState.isEditable(index: index) {
+            userState.selectedCellIndex = index
+            userState.selectedNumber = nil
+        } else {
+            if let value = userState.boardState[index] {
+                if userState.selectedNumber == value {
+                    userState.selectedNumber = nil
+                } else {
+                    userState.selectedNumber = value
+                }
+            } else {
+                userState.selectedNumber = nil
+            }
+        }
     }
 }

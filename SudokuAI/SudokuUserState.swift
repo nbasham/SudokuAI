@@ -59,9 +59,12 @@ class SudokuUserState: ObservableObject, Codable {
         return puzzle.cells[selectedCellIndex] <= 9
     }
     
+    func isEditable(index: Int) -> Bool {
+        return puzzle.cells[index] <= 9
+    }
+    
     private func updateCell(_ index: Int, with value: Int?) {
         guard index >= 0 && index < 81 else { return }
-        print("updateCell(\(index), value: \(value))")
         boardState[index] = value
     }
     

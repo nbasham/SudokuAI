@@ -14,6 +14,10 @@ struct SudokuBoardView: View {
                 SudokuBoardGridBackground()
                 SudokuBoardGrid()
                     .frame(width: size, height: size)
+                SelectedNumberHighlightOverlay(selectedNumber: userState.selectedNumber, boardState: userState.boardState)
+                    .frame(width: size, height: size)
+                SelectedCellHighlightOverlay(selectedCellIndex: userState.selectedCellIndex)
+                    .frame(width: size, height: size)
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<81, id: \.self) { index in
                         CellView(cellValue: userState.boardState[index])
@@ -80,6 +84,53 @@ struct SudokuBoardGrid: View {
             }
             .frame(width: size, height: size)
         }
+    }
+}
+
+struct SelectedCellHighlightOverlay: View {
+    let selectedCellIndex: Int?
+    var body: some View {
+        GeometryReader { geo in
+            if let index = selectedCellIndex, index >= 0 && index < 81 {
+                let size = min(geo.size.width, geo.size.height)
+                let cell = size / 9
+                let row = index / 9
+                let col = index % 9
+                Rectangle()
+                    .fill(Color.blue.opacity(0.22))
+                    .frame(width: cell, height: cell)
+                    .position(x: cell * (CGFloat(col) + 0.5),
+                              y: cell * (CGFloat(row) + 0.5))
+            }
+        }
+        .allowsHitTesting(false) // So it doesn't block taps
+    }
+}
+
+struct SelectedNumberHighlightOverlay: View {
+    let selectedNumber: Int?
+    let boardState: [Int?]
+    var body: some View {
+        GeometryReader { geo in
+            if let value = selectedNumber, value != 0 {
+                let size = min(geo.size.width, geo.size.height)
+                let cell = size / 9
+                ZStack {
+                    ForEach(0..<81, id: \.self) { idx in
+                        if boardState[idx] == value {
+                            let row = idx / 9
+                            let col = idx % 9
+                            Rectangle()
+                                .fill(Color.yellow.opacity(0.15))
+                                .frame(width: cell, height: cell)
+                                .position(x: cell * (CGFloat(col) + 0.5),
+                                          y: cell * (CGFloat(row) + 0.5))
+                        }
+                    }
+                }
+            }
+        }
+        .allowsHitTesting(false)
     }
 }
 

@@ -15,5 +15,6 @@ struct CellView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .contentShape(Rectangle())  //  Makes cell tappable even when empty
     }
 }
