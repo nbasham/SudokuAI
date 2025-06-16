@@ -3,8 +3,9 @@ import Combine
 
 class GameViewModel: ObservableObject {
     @Published var userState: SudokuUserState
+    @Published var solved: Bool = false
     
-    init(puzzleId: String = "1") {
+    init(puzzleId: String = "3") {
         self.userState = SudokuUserState(puzzleId: puzzleId)
 //        self.userState.note(5, at: 0)
     }
@@ -23,6 +24,10 @@ class GameViewModel: ObservableObject {
             let isCorrect = userState.guess(guess, at: index)
             if SystemSettings.showIncorrect && isCorrect {
                 
+            }
+            
+            if userState.isSolved {
+                solved = true
             }
         }
     }
@@ -44,3 +49,4 @@ class GameViewModel: ObservableObject {
         }
     }
 }
+

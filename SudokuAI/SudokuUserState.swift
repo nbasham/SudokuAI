@@ -58,11 +58,20 @@ class SudokuUserState: ObservableObject, Codable {
         guard let selectedCellIndex else { return false }
         return puzzle.cells[selectedCellIndex] <= 9
     }
+    var isSolved: Bool {
+        for index in 0...80 {
+            let answer =  puzzle.cells[index] <= 9 ? puzzle.cells[index] : puzzle.cells[index] - 9
+            if boardState[index] != answer {
+                return false
+            }
+        }
+        return true
+    }
     
     func isEditable(index: Int) -> Bool {
         return puzzle.cells[index] <= 9
     }
-    
+
     private func updateCell(_ index: Int, with value: Int?) {
         guard index >= 0 && index < 81 else { return }
         boardState[index] = value
