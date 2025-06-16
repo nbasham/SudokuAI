@@ -54,7 +54,7 @@ struct SudokuBoardGrid: View {
 }
 
 struct SudokuBoardView: View {
-    @Bindable var userState: SudokuUserState
+    @ObservedObject var userState: SudokuUserState
     let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 9)
 
     var body: some View {

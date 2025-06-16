@@ -1,12 +1,36 @@
 import Foundation
+import Combine
 
-class SudokuUserState: Observable, Codable {
+class SudokuUserState: ObservableObject, Codable {
     let puzzleId: SudokuPuzzle.ID
-    var selectedCellIndex: Int? = nil
-    var selectedNumber: Int? = nil
-    private(set) var boardState: [Int?]
+    @Published var selectedCellIndex: Int?
+    @Published var selectedNumber: Int?
+    @Published private(set) var boardState: [Int?]
     var puzzle: SudokuPuzzle {
         SudokuPuzzleStore.getPuzze(id: puzzleId)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case puzzleId
+        case selectedCellIndex
+        case selectedNumber
+        case boardState
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        puzzleId = try container.decode(SudokuPuzzle.ID.self, forKey: .puzzleId)
+        selectedCellIndex = try container.decodeIfPresent(Int.self, forKey: .selectedCellIndex)
+        selectedNumber = try container.decodeIfPresent(Int.self, forKey: .selectedNumber)
+        boardState = try container.decode([Int?].self, forKey: .boardState)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(puzzleId, forKey: .puzzleId)
+        try container.encode(selectedCellIndex, forKey: .selectedCellIndex)
+        try container.encode(selectedNumber, forKey: .selectedNumber)
+        try container.encode(boardState, forKey: .boardState)
     }
     
     init(puzzleId: SudokuPuzzle.ID, initialState: SudokuUserState? = nil) {
