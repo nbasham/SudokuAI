@@ -68,6 +68,22 @@ class SudokuUserState: ObservableObject, Codable {
         return true
     }
     
+    /// Returns the number that should fill all empty cells if and only if all unguessed cells have the same solution number in the puzzle. Otherwise, returns nil.
+    var onlyRemainingNumber: Int? {
+        let emptyIndices = boardState.indices.filter { boardState[$0] == nil }
+        guard !emptyIndices.isEmpty else { return nil }
+        let missingNumbers = emptyIndices.map { (puzzle.cells[$0] > 9 ? puzzle.cells[$0] - 9 : puzzle.cells[$0]) }
+        let first = missingNumbers.first!
+        return missingNumbers.allSatisfy { $0 == first } ? first : nil
+    }
+    
+    /// Returns the indices of all empty cells whose solution in the puzzle is the given number.
+    func indicesForEmptyCells(solutionIs number: Int) -> [Int] {
+        boardState.indices.filter { index in
+            boardState[index] == nil && (puzzle.cells[index] > 9 ? puzzle.cells[index] - 9 : puzzle.cells[index]) == number
+        }
+    }
+    
     func isEditable(index: Int) -> Bool {
         return puzzle.cells[index] <= 9
     }

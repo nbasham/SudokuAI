@@ -93,4 +93,19 @@ class SudokuUserStateTests: XCTestCase {
         XCTAssertEqual(restored.selectedNumber, 7)
         XCTAssertEqual(restored.boardState, initialState.boardState)
     }
+    
+    func testOnlyRemainingNumber() {
+        //  Puzzle 3 is almost completed and after answering a 7, has five 8's remaining to be guessed
+        let state = SudokuUserState(puzzleId: "3")
+        var number = state.onlyRemainingNumber
+        XCTAssertEqual(number, nil)
+        _ = state.guess(7, at: 55)
+        number = state.onlyRemainingNumber
+        XCTAssertEqual(number, 8)
+        let indexes = state.indicesForEmptyCells(solutionIs: 8)
+        XCTAssertEqual(indexes.count, 5)
+        for index in indexes {
+            XCTAssertEqual(state.puzzle.cells[index], 8, "Each empty cell index should now have value 8.")
+        }
+    }
 }
