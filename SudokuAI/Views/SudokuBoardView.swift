@@ -1,7 +1,8 @@
 import SwiftUI
 import Observation
 
-struct SudokuBoardAlternateGridBackground: View {
+// Draws an alternate light gray background on every other grid
+struct SudokuBoardGridBackground: View {
     var body: some View {
         GeometryReader { geo in
             let size = min(geo.size.width, geo.size.height)
@@ -61,7 +62,7 @@ struct SudokuBoardView: View {
             let size = min(geo.size.width, geo.size.height)
             ZStack {
                 Color.white // Board background
-                SudokuBoardAlternateGridBackground()
+                SudokuBoardGridBackground()
                 SudokuBoardGrid()
                     .frame(width: size, height: size)
                 LazyVGrid(columns: columns, spacing: 0) {
@@ -75,7 +76,6 @@ struct SudokuBoardView: View {
             .frame(width: size, height: size)
         }
         .padding(8)
-        .background(Color.gray.opacity(0.3))
     }
 }
 
