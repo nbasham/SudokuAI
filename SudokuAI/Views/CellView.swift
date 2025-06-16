@@ -1,5 +1,4 @@
 import SwiftUI
-import Observation
 
 struct CellView: View {
     var cellValue: Int?

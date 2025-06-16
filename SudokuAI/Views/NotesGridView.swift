@@ -1,5 +1,4 @@
 import SwiftUI
-import Observation
 
 struct NotesGridView: View {
     var notesValue: Int
