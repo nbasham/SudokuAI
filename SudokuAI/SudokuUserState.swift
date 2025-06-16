@@ -64,20 +64,21 @@ class SudokuUserState: ObservableObject, Codable {
         boardState[index] = value
     }
     
-    func guess(_ number: Int, at index: Int) {
+    func guess(_ number: Int, at index: Int) -> Bool {
         guard index >= 0 && index < 81 else {
             print("ERROR: Invalid index passed to guess(): \(index)")
-            return
+            return false
         }
         guard number >= 1 && number <= 9 else {
             print("ERROR: Invalid number passed to guess(): \(number)")
-            return
+            return false
         }
         var value: Int? = number
         if (boardState[index] == number) {
             value = nil
         }
         updateCell(index, with: value)
+        return value == puzzle.cells[index]
     }
     
     func note(_ number: Int, at index: Int) {
