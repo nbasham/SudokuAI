@@ -61,6 +61,7 @@ class SudokuUserState: ObservableObject, Codable {
     
     private func updateCell(_ index: Int, with value: Int?) {
         guard index >= 0 && index < 81 else { return }
+        print("updateCell(\(index), value: \(value))")
         boardState[index] = value
     }
     
@@ -81,7 +82,7 @@ class SudokuUserState: ObservableObject, Codable {
         return value == puzzle.cells[index]
     }
     
-    func note(_ number: Int, at index: Int) {
+    internal func note(_ number: Int, at index: Int) {
         guard index >= 0 && index < 81 else {
                 print("ERROR: Invalid index passed to note(): \(index)")
                 return
@@ -107,3 +108,4 @@ extension SudokuUserState {
         }
     }
 }
+

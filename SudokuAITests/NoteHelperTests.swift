@@ -30,6 +30,8 @@ class NoteHelperTests: XCTestCase {
         XCTAssertEqual(NoteHelper.remove(2, cellValue: noteCell), nil)
     }
     func testContains() async throws {
+        for note in 1...9 {
+        }
         let guessCell: Int? = 1
         let emptyCell: Int? = nil
         let noteCell: Int? = -4
@@ -37,6 +39,19 @@ class NoteHelperTests: XCTestCase {
         XCTAssertFalse(NoteHelper.contains(1, cellValue: emptyCell))
         XCTAssertFalse(NoteHelper.contains(1, cellValue: noteCell))
         XCTAssertTrue(NoteHelper.contains(2, cellValue: noteCell))
+        for note in 1...9 {
+            XCTAssertFalse(NoteHelper.contains(note, cellValue: guessCell))
+        }
+        for note in 1...9 {
+            XCTAssertFalse(NoteHelper.contains(note, cellValue: emptyCell))
+        }
+        for note in 1...9 {
+            if note == 2 {
+                XCTAssertTrue(NoteHelper.contains(note, cellValue: noteCell))
+            } else {
+                XCTAssertFalse(NoteHelper.contains(note, cellValue: noteCell))
+            }
+        }
     }
     func testHasNotes() async throws {
         let guessCell: Int? = 1

@@ -8,9 +8,9 @@ struct GameView: View {
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1, contentMode: .fit)
             HStack {
-                GuessView()
+                GuessPickerView()
                     .aspectRatio(1, contentMode: .fit)
-                Color.yellow
+                NotesPickerView()
                     .aspectRatio(1, contentMode: .fit)
             }
             Spacer()

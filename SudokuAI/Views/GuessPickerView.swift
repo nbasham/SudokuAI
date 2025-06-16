@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct GuessView: View {
+struct GuessPickerView: View {
     @EnvironmentObject var viewModel: GameViewModel
     @State private var selectedNumber: Int? = nil
 
@@ -32,5 +32,5 @@ struct GuessView: View {
 }
 
 #Preview {
-    GuessView()
+    GuessPickerView()
 }

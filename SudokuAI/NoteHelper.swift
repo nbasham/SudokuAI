@@ -34,7 +34,8 @@ public struct NoteHelper {
     static func contains(_ note: Int, cellValue: Int?) -> Bool {
         guard let value = cellValue else { return false }
         guard value < 0 else { return false }
-        return (value & (bitValue(note))) != 0
+        let bit = bitValue(note)
+        return (-value & bit) != 0
     }
     static func hasNotes(cellValue: Int?) -> Bool {
         guard let value = cellValue else { return false }
