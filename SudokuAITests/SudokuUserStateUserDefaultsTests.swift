@@ -10,7 +10,7 @@ class SudokuUserStateUserDefaultsTests: XCTestCase {
         original.selectedCellIndex = 10
         original.selectedNumber = 7
         // Guess a number and note a number (exercises boardState changes)
-        original.guess(3, at: 20)
+        _ = original.guess(3, at: 20)
         original.note(5, at: 21)
 
         // Act: Save and then load

@@ -57,8 +57,8 @@ class SudokuUserStateTests: XCTestCase {
 
     func testGuessDoesNotAffectInvalidIndex() {
         let userState = SudokuUserState(puzzleId: testPuzzleId)
-        userState.guess(2, at: -1)
-        userState.guess(7, at: 81)
+        _ = userState.guess(2, at: -1)
+        _ = userState.guess(7, at: 81)
         // Should not crash, and no out-of-bounds error. boardState remains at 81 cells
         XCTAssertEqual(userState.boardState.count, 81)
     }
