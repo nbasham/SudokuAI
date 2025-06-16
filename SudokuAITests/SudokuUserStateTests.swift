@@ -1,5 +1,5 @@
 import XCTest
-@testable import  SudokuAI
+@testable import SudokuAI
 
 @MainActor
 class SudokuUserStateTests: XCTestCase {

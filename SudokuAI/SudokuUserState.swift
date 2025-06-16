@@ -1,6 +1,6 @@
 import Foundation
 
-class SudokuUserState: Observable {
+class SudokuUserState: Observable, Codable {
     let puzzleId: SudokuPuzzle.ID
     var selectedCellIndex: Int? = nil
     var selectedNumber: Int? = nil
@@ -32,8 +32,14 @@ class SudokuUserState: Observable {
     }
     
     func guess(_ number: Int, at index: Int) {
-        guard index >= 0 && index < 81 else { return }
-        guard number >= 1 && number <= 9 else { return }
+        guard index >= 0 && index < 81 else {
+            print("ERROR: Invalid index passed to guess(): \(index)")
+            return
+        }
+        guard number >= 1 && number <= 9 else {
+            print("ERROR: Invalid number passed to guess(): \(number)")
+            return
+        }
         var value: Int? = number
         if (boardState[index] == number) {
             value = nil
@@ -42,9 +48,28 @@ class SudokuUserState: Observable {
     }
     
     func note(_ number: Int, at index: Int) {
-        guard index >= 0 && index < 81 else { return }
-        guard number >= 1 && number <= 9 else { return }
+        guard index >= 0 && index < 81 else {
+                print("ERROR: Invalid index passed to note(): \(index)")
+                return
+            }
+        guard number >= 1 && number <= 9 else {
+            print("ERROR: Invalid number passed to note(): \(number)")
+            return
+        }
         let cellValue = NoteHelper.add(number, cellValue: boardState[index])
         updateCell(index, with: cellValue)
+    }
+}
+
+extension SudokuUserState {
+    static func load(fromKey key: String) -> SudokuUserState? {
+        guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
+        return try? JSONDecoder().decode(SudokuUserState.self, from: data)
+    }
+    
+    func save(toKey key: String) {
+        if let data = try? JSONEncoder().encode(self) {
+            UserDefaults.standard.set(data, forKey: key)
+        }
     }
 }
