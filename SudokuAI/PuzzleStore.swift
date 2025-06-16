@@ -1,6 +1,6 @@
 import Foundation
 
-struct SudokuPuzzleStore {
+struct PuzzleStore {
     static func getPuzze(id: String) -> SudokuPuzzle {
         if id == "1" {
             return SudokuPuzzle(id: "1", csv: "5,11,15,10,9,3,4,17,7,1,7,17,14,4,2,6,3,9,13,18,3,6,7,8,14,1,11,12,4,1,2,17,6,7,18,5,15,5,9,3,1,16,8,11,13,7,17,2,9,5,4,10,15,3,2,3,14,7,15,10,9,13,8,9,6,4,8,11,14,3,7,10,8,1,7,4,3,18,11,5,15")

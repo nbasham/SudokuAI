@@ -5,7 +5,7 @@ struct GameView: View {
     @State private var showSolvedAlert = false
     var body: some View {
         VStack {
-            SudokuBoardView()
+            BoardView()
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1, contentMode: .fit)
             HStack {

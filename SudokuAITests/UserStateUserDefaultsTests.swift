@@ -2,11 +2,11 @@ import XCTest
 @testable import SudokuAI
 
 @MainActor
-class SudokuUserStateUserDefaultsTests: XCTestCase {
+class UserStateUserDefaultsTests: XCTestCase {
     static let testKey = "SudokuUserStateTestKey"
 
     func testSaveAndLoad() async throws {
-        let original = SudokuUserState(puzzleId: "1")
+        let original = UserState(puzzleId: "1")
         original.selectedCellIndex = 10
         original.selectedNumber = 7
         // Guess a number and note a number (exercises boardState changes)
@@ -15,7 +15,7 @@ class SudokuUserStateUserDefaultsTests: XCTestCase {
 
         // Act: Save and then load
         original.save(toKey: Self.testKey)
-        let loaded = SudokuUserState.load(fromKey: Self.testKey)
+        let loaded = UserState.load(fromKey: Self.testKey)
 
         // Assert: Loaded state is not nil and matches expected fields
         XCTAssertNotNil(loaded, "Should load state from UserDefaults")
@@ -32,7 +32,7 @@ class SudokuUserStateUserDefaultsTests: XCTestCase {
         let missingKey = "SudokuUserStateTestMissingKey"
         // Clean just in case
         UserDefaults.standard.removeObject(forKey: missingKey)
-        let loaded = SudokuUserState.load(fromKey: missingKey)
+        let loaded = UserState.load(fromKey: missingKey)
         XCTAssertNil(loaded, "Should return nil for missing key")
     }
 }

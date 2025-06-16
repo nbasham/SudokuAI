@@ -1,13 +1,13 @@
 import Foundation
 import Combine
 
-class SudokuUserState: ObservableObject, Codable {
+class UserState: ObservableObject, Codable {
     let puzzleId: SudokuPuzzle.ID
     @Published var selectedCellIndex: Int?
     @Published var selectedNumber: Int?
     @Published private(set) var boardState: [Int?]
     var puzzle: SudokuPuzzle {
-        SudokuPuzzleStore.getPuzze(id: puzzleId)
+        PuzzleStore.getPuzze(id: puzzleId)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -33,7 +33,7 @@ class SudokuUserState: ObservableObject, Codable {
         try container.encode(boardState, forKey: .boardState)
     }
     
-    init(puzzleId: SudokuPuzzle.ID, initialState: SudokuUserState? = nil) {
+    init(puzzleId: SudokuPuzzle.ID, initialState: UserState? = nil) {
         self.puzzleId = puzzleId
         if let initialState, initialState.puzzleId == puzzleId {
             self.selectedCellIndex = initialState.selectedCellIndex
@@ -124,10 +124,10 @@ class SudokuUserState: ObservableObject, Codable {
     }
 }
 
-extension SudokuUserState {
-    static func load(fromKey key: String) -> SudokuUserState? {
+extension UserState {
+    static func load(fromKey key: String) -> UserState? {
         guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
-        return try? JSONDecoder().decode(SudokuUserState.self, from: data)
+        return try? JSONDecoder().decode(UserState.self, from: data)
     }
     
     func save(toKey key: String) {

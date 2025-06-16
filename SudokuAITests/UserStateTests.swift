@@ -2,10 +2,10 @@ import XCTest
 @testable import SudokuAI
 
 @MainActor
-class SudokuUserStateTests: XCTestCase {
+class UserStateTests: XCTestCase {
     let testPuzzleId = "1"
     
-    private func firstEmptyCellIndex(_ userState: SudokuUserState) -> Int? {
+    private func firstEmptyCellIndex(_ userState: UserState) -> Int? {
         let puzzle = userState.puzzle
         for i in 0..<81 {
             if puzzle.cells[i] <= 9 { return i }
@@ -14,7 +14,7 @@ class SudokuUserStateTests: XCTestCase {
     }
 
     func testInitWithDefaultState() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         XCTAssertEqual(userState.puzzleId, testPuzzleId)
         XCTAssertEqual(userState.boardState.count, 81)
         // Check that cells with puzzleValue > 9 are seeded with their value - 9
@@ -30,14 +30,14 @@ class SudokuUserStateTests: XCTestCase {
     }
 
     func testGuessSetsCell() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         guard let emptyIndex = firstEmptyCellIndex(userState) else { XCTFail("No empty cell"); return }
         _ = userState.guess(3, at: emptyIndex)
         XCTAssertEqual(userState.boardState[emptyIndex], 3)
     }
 
     func testGuessTogglesCell() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         guard let emptyIndex = firstEmptyCellIndex(userState) else { XCTFail("No empty cell"); return }
         _ = userState.guess(4, at: emptyIndex)
         XCTAssertEqual(userState.boardState[emptyIndex], 4)
@@ -47,7 +47,7 @@ class SudokuUserStateTests: XCTestCase {
 
     //  Assumes first cell is 5
     func testGuessIsCorrect() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         guard let emptyIndex = firstEmptyCellIndex(userState) else { XCTFail("No empty cell"); return }
         var isCorrect = userState.guess(4, at: emptyIndex)
         XCTAssertFalse(isCorrect)
@@ -56,7 +56,7 @@ class SudokuUserStateTests: XCTestCase {
     }
 
     func testGuessDoesNotAffectInvalidIndex() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         _ = userState.guess(2, at: -1)
         _ = userState.guess(7, at: 81)
         // Should not crash, and no out-of-bounds error. boardState remains at 81 cells
@@ -64,7 +64,7 @@ class SudokuUserStateTests: XCTestCase {
     }
 
     func testNoteAddsNoteValue() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         guard let emptyIndex = firstEmptyCellIndex(userState) else { XCTFail("No empty cell"); return }
         userState.note(3, at: emptyIndex)
         // A note should be a negative value containing bit for 3
@@ -72,7 +72,7 @@ class SudokuUserStateTests: XCTestCase {
     }
 
     func testNoteTogglesOff() {
-        let userState = SudokuUserState(puzzleId: testPuzzleId)
+        let userState = UserState(puzzleId: testPuzzleId)
         guard let emptyIndex = firstEmptyCellIndex(userState) else { XCTFail("No empty cell"); return }
         userState.note(2, at: emptyIndex)
         let first = userState.boardState[emptyIndex]
@@ -83,12 +83,12 @@ class SudokuUserStateTests: XCTestCase {
     }
 
     func testRestoreFromInitialState() {
-        let initialState = SudokuUserState(puzzleId: testPuzzleId)
+        let initialState = UserState(puzzleId: testPuzzleId)
         let restoredEmptyIndex = firstEmptyCellIndex(initialState) ?? 0
         initialState.selectedCellIndex = 33
         initialState.selectedNumber = 7
         _ = initialState.guess(8, at: restoredEmptyIndex)
-        let restored = SudokuUserState(puzzleId: testPuzzleId, initialState: initialState)
+        let restored = UserState(puzzleId: testPuzzleId, initialState: initialState)
         XCTAssertEqual(restored.selectedCellIndex, 33)
         XCTAssertEqual(restored.selectedNumber, 7)
         XCTAssertEqual(restored.boardState, initialState.boardState)
@@ -96,7 +96,7 @@ class SudokuUserStateTests: XCTestCase {
     
     func testOnlyRemainingNumber() {
         //  Puzzle 3 is almost completed and after answering a 7, has five 8's remaining to be guessed
-        let state = SudokuUserState(puzzleId: "3")
+        let state = UserState(puzzleId: "3")
         var number = state.onlyRemainingNumber
         XCTAssertEqual(number, nil)
         _ = state.guess(7, at: 55)

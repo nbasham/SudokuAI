@@ -2,11 +2,11 @@ import Foundation
 import Combine
 
 class GameViewModel: ObservableObject {
-    @Published var userState: SudokuUserState
+    @Published var userState: UserState
     @Published var solved: Bool = false
     
     init(puzzleId: String = "3") {
-        self.userState = SudokuUserState(puzzleId: puzzleId)
+        self.userState = UserState(puzzleId: puzzleId)
 //        self.userState.note(5, at: 0)
     }
     

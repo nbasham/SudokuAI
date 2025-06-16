@@ -1,9 +1,9 @@
 import SwiftUI
 import Observation
 
-struct SudokuBoardView: View {
+struct BoardView: View {
     @EnvironmentObject var viewModel: GameViewModel
-    @EnvironmentObject var userState: SudokuUserState
+    @EnvironmentObject var userState: UserState
     let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 9)
 
     var body: some View {
@@ -137,7 +137,7 @@ struct SelectedNumberHighlightOverlay: View {
 #Preview {
     let viewModel = GameViewModel()
     let userState = viewModel.userState
-    SudokuBoardView()
+    BoardView()
         .environmentObject(viewModel)
         .environmentObject(userState)
 }
