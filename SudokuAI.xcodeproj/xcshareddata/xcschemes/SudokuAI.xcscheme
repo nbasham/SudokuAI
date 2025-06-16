@@ -35,7 +35,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "207E9C7C2DF9D6F700477BCB"
+               BlueprintIdentifier = "20224D882DFF8BDC001D86B1"
                BuildableName = "SudokuAITests.xctest"
                BlueprintName = "SudokuAITests"
                ReferencedContainer = "container:SudokuAI.xcodeproj">

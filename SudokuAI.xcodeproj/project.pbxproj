@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		20224D8D2DFF8BDC001D86B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20F280E72DF79A90001F8CC3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20F280EE2DF79A90001F8CC3;
+			remoteInfo = SudokuAI;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		20224D892DFF8BDC001D86B1 /* SudokuAITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SudokuAITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20F280EF2DF79A90001F8CC3 /* SudokuAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SudokuAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		20224D8A2DFF8BDC001D86B1 /* SudokuAITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SudokuAITests;
+			sourceTree = "<group>";
+		};
 		20F280F12DF79A90001F8CC3 /* SudokuAI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SudokuAI;
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		20224D862DFF8BDC001D86B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20F280EC2DF79A90001F8CC3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				20F280F12DF79A90001F8CC3 /* SudokuAI */,
+				20224D8A2DFF8BDC001D86B1 /* SudokuAITests */,
 				20F280F02DF79A90001F8CC3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				20F280EF2DF79A90001F8CC3 /* SudokuAI.app */,
+				20224D892DFF8BDC001D86B1 /* SudokuAITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		20224D882DFF8BDC001D86B1 /* SudokuAITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20224D912DFF8BDC001D86B1 /* Build configuration list for PBXNativeTarget "SudokuAITests" */;
+			buildPhases = (
+				20224D852DFF8BDC001D86B1 /* Sources */,
+				20224D862DFF8BDC001D86B1 /* Frameworks */,
+				20224D872DFF8BDC001D86B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20224D8E2DFF8BDC001D86B1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				20224D8A2DFF8BDC001D86B1 /* SudokuAITests */,
+			);
+			name = SudokuAITests;
+			packageProductDependencies = (
+			);
+			productName = SudokuAITests;
+			productReference = 20224D892DFF8BDC001D86B1 /* SudokuAITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		20F280EE2DF79A90001F8CC3 /* SudokuAI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20F280FA2DF79A92001F8CC3 /* Build configuration list for PBXNativeTarget "SudokuAI" */;
@@ -80,6 +128,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					20224D882DFF8BDC001D86B1 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 20F280EE2DF79A90001F8CC3;
+					};
 					20F280EE2DF79A90001F8CC3 = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				20F280EE2DF79A90001F8CC3 /* SudokuAI */,
+				20224D882DFF8BDC001D86B1 /* SudokuAITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		20224D872DFF8BDC001D86B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20F280ED2DF79A90001F8CC3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		20224D852DFF8BDC001D86B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20F280EB2DF79A90001F8CC3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,55 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		20224D8E2DFF8BDC001D86B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20F280EE2DF79A90001F8CC3 /* SudokuAI */;
+			targetProxy = 20224D8D2DFF8BDC001D86B1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		20224D8F2DFF8BDC001D86B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CBH5AV2U3Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dunno.SudokuAITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SudokuAI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SudokuAI";
+			};
+			name = Debug;
+		};
+		20224D902DFF8BDC001D86B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CBH5AV2U3Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dunno.SudokuAITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SudokuAI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SudokuAI";
+			};
+			name = Release;
+		};
 		20F280F82DF79A92001F8CC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -311,6 +426,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		20224D912DFF8BDC001D86B1 /* Build configuration list for PBXNativeTarget "SudokuAITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20224D8F2DFF8BDC001D86B1 /* Debug */,
+				20224D902DFF8BDC001D86B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		20F280EA2DF79A90001F8CC3 /* Build configuration list for PBXProject "SudokuAI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

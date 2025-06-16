@@ -1,52 +1,49 @@
-import Testing
+import XCTest
+@testable import  SudokuAI
 
-@Suite("NoteHelper: Sudoku note logic")
-struct NoteHelperTests {
-    @Test("noteValue(for:) returns correct single bit")
-    func testNoteValue() async throws {
+@MainActor
+class NoteHelperTests: XCTestCase {
+    func testBitValue() async throws {
         for note in 1...9 {
-            let value = NoteHelper.noteValue(for: note)
-            #expect(value == 1 << (note - 1))
+            let value = Int(pow(2.0, Double(note)))
+            XCTAssertEqual(NoteHelper.bitValue(note), value)
         }
-        #expect(NoteHelper.noteValue(for: 0) == 0)
-        #expect(NoteHelper.noteValue(for: 10) == 0)
     }
-
-    @Test("contains(notes:note:) identifies present and absent notes")
+    func testAdd() async throws {
+        let guessCell: Int? = 1
+        let emptyCell: Int? = nil
+        let noteCell: Int? = -4
+        XCTAssertEqual(NoteHelper.add(1, cellValue: guessCell), -2)
+        XCTAssertEqual(NoteHelper.add(1, cellValue: emptyCell), -2)
+        XCTAssertEqual(NoteHelper.add(1, cellValue: noteCell), -(NoteHelper.bitValue(2) + NoteHelper.bitValue(1)))
+        // Toggle existing value
+        XCTAssertEqual(NoteHelper.add(2, cellValue: noteCell), nil)
+    }
+    func testRemove() async throws {
+        let guessCell: Int? = 1
+        let emptyCell: Int? = nil
+        let noteCell: Int? = -4
+        XCTAssertEqual(NoteHelper.remove(1, cellValue: guessCell), guessCell)
+        XCTAssertEqual(NoteHelper.remove(1, cellValue: emptyCell), emptyCell)
+        // Remove a note that doesn't exist
+        XCTAssertEqual(NoteHelper.remove(1, cellValue: noteCell), noteCell)
+        XCTAssertEqual(NoteHelper.remove(2, cellValue: noteCell), nil)
+    }
     func testContains() async throws {
-        var notes = 0
-        notes = NoteHelper.adding(notes: notes, note: 4)
-        notes = NoteHelper.adding(notes: notes, note: 7)
-        #expect(NoteHelper.contains(notes: notes, note: 4))
-        #expect(NoteHelper.contains(notes: notes, note: 7))
-        #expect(!NoteHelper.contains(notes: notes, note: 3))
-        #expect(!NoteHelper.contains(notes: notes, note: 10))
+        let guessCell: Int? = 1
+        let emptyCell: Int? = nil
+        let noteCell: Int? = -4
+        XCTAssertFalse(NoteHelper.contains(1, cellValue: guessCell))
+        XCTAssertFalse(NoteHelper.contains(1, cellValue: emptyCell))
+        XCTAssertFalse(NoteHelper.contains(1, cellValue: noteCell))
+        XCTAssertTrue(NoteHelper.contains(2, cellValue: noteCell))
     }
-
-    @Test("adding(notes:note:) sets notes idempotently")
-    func testAdding() async throws {
-        var notes = 0
-        notes = NoteHelper.adding(notes: notes, note: 2)
-        notes = NoteHelper.adding(notes: notes, note: 2)
-        #expect(NoteHelper.contains(notes: notes, note: 2))
-        #expect(notes == NoteHelper.noteValue(for: 2))
-    }
-
-    @Test("removing(notes:note:) clears notes idempotently")
-    func testRemoving() async throws {
-        var notes = NoteHelper.adding(notes: 0, note: 3)
-        notes = NoteHelper.removing(notes: notes, note: 3)
-        #expect(!NoteHelper.contains(notes: notes, note: 3))
-        #expect(notes == 0)
-        // Removing again is still zero.
-        notes = NoteHelper.removing(notes: notes, note: 3)
-        #expect(notes == 0)
-    }
-
-    @Test("isEmpty(notes:) detects empty state correctly")
-    func testIsEmpty() async throws {
-        #expect(NoteHelper.isEmpty(notes: 0))
-        let notes = NoteHelper.adding(notes: 0, note: 8)
-        #expect(!NoteHelper.isEmpty(notes: notes))
+    func testHasNotes() async throws {
+        let guessCell: Int? = 1
+        let emptyCell: Int? = nil
+        let noteCell: Int? = -4
+        XCTAssertFalse(NoteHelper.hasNotes(cellValue: guessCell))
+        XCTAssertFalse(NoteHelper.hasNotes(cellValue: emptyCell))
+        XCTAssertTrue(NoteHelper.hasNotes(cellValue: noteCell))
     }
 }

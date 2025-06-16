@@ -1,30 +1,44 @@
-// NoteHelper.swift
-// Utility for working with Sudoku notes (1...9) using an efficient internal representation.
 import Foundation
 
 public struct NoteHelper {
-    /// Returns a value representing a single note (1...9).
-    public static func noteValue(for note: Int) -> Int {
-        guard (1...9).contains(note) else { return 0 }
-        return 1 << (note - 1)
+    internal static func bitValue(_ note: Int) -> Int {
+        1 << note
     }
-    /// Checks if a note is present in notes.
-    public static func contains(notes: Int, note: Int) -> Bool {
-        let bit = noteValue(for: note)
-        return (notes & bit) != 0
+    static func add(_ note: Int, cellValue: Int?) -> Int? {
+        var value: Int = 0
+        if let cellValue {
+            if cellValue < 0  {
+                value = abs(cellValue)
+            }
+        }
+        value = value ^ bitValue(note)
+        if value == 0 {
+            return nil
+        } else {
+            return -value
+        }
     }
-    /// Returns notes with a note added (idempotent).
-    public static func adding(notes: Int, note: Int) -> Int {
-        let bit = noteValue(for: note)
-        return notes | bit
+    static func remove(_ note: Int, cellValue: Int?) -> Int? {
+        var value: Int = abs(cellValue ?? 0)
+        if let temp = cellValue, temp > 0 {
+            print("Check UI, we shouldn't be removing a ntoe from a guess")
+            return cellValue
+        }
+        value = value & ~bitValue(note)
+        if value == 0 {
+            return nil
+        } else {
+            return -value
+        }
     }
-    /// Returns notes with a note removed (idempotent).
-    public static func removing(notes: Int, note: Int) -> Int {
-        let bit = noteValue(for: note)
-        return notes & ~bit
+    static func contains(_ note: Int, cellValue: Int?) -> Bool {
+        guard let value = cellValue else { return false }
+        guard value < 0 else { return false }
+        return (value & (bitValue(note))) != 0
     }
-    /// Returns true if there are no notes set.
-    public static func isEmpty(notes: Int) -> Bool {
-        return notes == 0
+    static func hasNotes(cellValue: Int?) -> Bool {
+        guard let value = cellValue else { return false }
+        guard value < 0 else { return false }
+        return value != 0
     }
 }
