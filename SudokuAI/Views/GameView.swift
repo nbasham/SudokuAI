@@ -4,7 +4,7 @@ struct GameView: View {
     @EnvironmentObject var viewModel: GameViewModel
     var body: some View {
         VStack {
-            SudokuBoardView(userState: viewModel.userState)
+            SudokuBoardView()
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1, contentMode: .fit)
             HStack {
@@ -20,5 +20,8 @@ struct GameView: View {
 }
 
 #Preview {
-    GameView().environmentObject(GameViewModel())
+    let viewModel = GameViewModel()
+    GameView()
+        .environmentObject(viewModel)
+        .environmentObject(viewModel.userState)
 }

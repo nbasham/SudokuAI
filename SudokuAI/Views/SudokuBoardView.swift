@@ -54,7 +54,8 @@ struct SudokuBoardGrid: View {
 }
 
 struct SudokuBoardView: View {
-    @ObservedObject var userState: SudokuUserState
+    @EnvironmentObject var viewModel: GameViewModel
+    @EnvironmentObject var userState: SudokuUserState
     let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 9)
 
     var body: some View {
@@ -69,6 +70,9 @@ struct SudokuBoardView: View {
                     ForEach(0..<81, id: \.self) { index in
                         SudokuCellView(cellValue: userState.boardState[index])
                             .aspectRatio(1, contentMode: .fit)
+                            .onTapGesture {
+                                viewModel.boardTap(index: index)
+                            }
                     }
                 }
                 .frame(width: size, height: size)
@@ -120,10 +124,9 @@ struct NotesGridView: View {
 }
 
 #Preview {
-    let userState: SudokuUserState = {
-        let u = SudokuUserState(puzzleId: "1")
-        u.note(5, at: 0)
-        return u
-    }()
-    SudokuBoardView(userState: userState)
+    let viewModel = GameViewModel()
+    let userState = viewModel.userState
+    SudokuBoardView()
+        .environmentObject(viewModel)
+        .environmentObject(userState)
 }

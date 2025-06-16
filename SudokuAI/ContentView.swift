@@ -9,11 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+        let viewModel = GameViewModel()
         GameView()
-            .environmentObject(GameViewModel())
+            .environmentObject(viewModel)
+            .environmentObject(viewModel.userState)
     }
 }
 
 #Preview {
+    let viewModel = GameViewModel()
     ContentView()
+        .environmentObject(viewModel)
+        .environmentObject(viewModel.userState)
 }
