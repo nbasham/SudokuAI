@@ -3,6 +3,14 @@ import UIKit
 
 class SystemSettings: NSObject {
 
+    static func performFirstLaunchSetupIfNeeded() {
+        let launchedBefore = UserDefaults.standard.bool(forKey: "setDefaultsHasLaunchedBefore")
+        if !launchedBefore {
+            setDefaults()
+            UserDefaults.standard.set(true, forKey: "setDefaultsHasLaunchedBefore")
+        }
+    }
+    
     static var prerelease: Bool {
         get { return UserDefaults.getb("prerelease") }
         set { UserDefaults.save(newValue, forKey: "prerelease") }
