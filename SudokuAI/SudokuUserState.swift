@@ -32,14 +32,19 @@ class SudokuUserState: Observable {
     }
     
     func guess(_ number: Int, at index: Int) {
+        guard index >= 0 && index < 81 else { return }
+        guard number >= 1 && number <= 9 else { return }
+        var value: Int? = number
         if (boardState[index] == number) {
-            boardState[index] = nil
+            value = nil
         }
-        updateCell(index, with: number)
+        updateCell(index, with: value)
     }
     
-//    func note(_ number: Int, at index: Int) {
-//        let cellValue = NoteHelper.add(number, at: index)
-//        updateCell(index, with: cellValue)
-//    }
+    func note(_ number: Int, at index: Int) {
+        guard index >= 0 && index < 81 else { return }
+        guard number >= 1 && number <= 9 else { return }
+        let cellValue = NoteHelper.add(number, cellValue: boardState[index])
+        updateCell(index, with: cellValue)
+    }
 }
