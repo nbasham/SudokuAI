@@ -38,6 +38,16 @@ class GameViewModel: ObservableObject {
             cellAttributes[index] = isCorrect ? .none : .incorrect
             cellAnimations[index] = .guess
             
+            //  remove other occurences of guess in grid
+            let indicies = indicesForGrid(of: index)
+            for i in indicies {
+                if i != index {
+                    if userState.boardState[i] == guess {
+                        _ = userState.guess(guess, at: i)
+                    }
+                }
+            }
+
             // Check for completed row, col, or grid
             let row = index / 9
             let col = index % 9

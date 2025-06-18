@@ -1,19 +1,24 @@
 import SwiftUI
 
-struct NotesPickerView: View {
+struct PickerView: View {
     @EnvironmentObject var viewModel: GameViewModel
+    let isNotes: Bool
 
     var body: some View {
         let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
 
         VStack {
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(1...9, id: \.self) { note in
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(1...9, id: \.self) { number in
                     Button(action: {
-                        viewModel.setNote(note)
+                        if isNotes {
+                            viewModel.setNote(number)
+                        } else {
+                            viewModel.userGuess(guess: number)
+                        }
                     }) {
-                        Text("\(note)")
-                            .font(.title3)
+                        Text("\(number)")
+                            .font(isNotes ? .title3 : .title)
                             .foregroundStyle(.primary)
                             .frame(width: 40, height: 40)
                             .background(Color.gray.opacity(0.2))
@@ -26,5 +31,5 @@ struct NotesPickerView: View {
 }
 
 #Preview {
-    NotesPickerView()
+    PickerView(isNotes: true)
 }

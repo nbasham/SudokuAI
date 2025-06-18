@@ -9,11 +9,13 @@ struct GameView: View {
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1, contentMode: .fit)
             HStack {
-                GuessPickerView()
+                PickerView(isNotes: false)
                     .aspectRatio(1, contentMode: .fit)
-                NotesPickerView()
+                Spacer(minLength: 48)
+                PickerView(isNotes: true)
                     .aspectRatio(1, contentMode: .fit)
             }
+            .padding()
             Spacer()
         }
         .background(Color.gray.opacity(0.3))
@@ -28,5 +30,4 @@ struct GameView: View {
     let viewModel = GameViewModel()
     GameView()
         .environmentObject(viewModel)
-        .environmentObject(viewModel.userState)
 }
