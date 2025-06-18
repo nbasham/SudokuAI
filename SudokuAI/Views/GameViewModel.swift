@@ -42,7 +42,7 @@ class GameViewModel: ObservableObject {
             let indicies = indicesForGrid(of: index)
             for i in indicies {
                 if i != index {
-                    if userState.boardState[i] == guess {
+                    if userState.boardState[i] == guess && userState.isCellEditable(i) {
                         _ = userState.guess(guess, at: i)
                     }
                 }

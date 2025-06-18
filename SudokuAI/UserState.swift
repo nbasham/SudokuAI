@@ -56,7 +56,10 @@ class UserState: ObservableObject, Codable {
     }
     var isSelectionEditable: Bool {
         guard let selectedCellIndex else { return false }
-        return puzzle.cells[selectedCellIndex] <= 9
+        return isCellEditable(selectedCellIndex)
+    }
+    func isCellEditable(_ index: Int) -> Bool {
+        return puzzle.cells[index] <= 9
     }
     var isSolved: Bool {
         for index in 0...80 {

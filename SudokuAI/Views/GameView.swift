@@ -1,13 +1,20 @@
 import SwiftUI
 
+
+
 struct GameView: View {
     @EnvironmentObject var viewModel: GameViewModel
     @State private var showSolvedAlert = false
     var body: some View {
         VStack {
+            ProgressView()
+                .environmentObject(viewModel)
+                .padding(.top)
+
             BoardView()
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1, contentMode: .fit)
+
             HStack {
                 PickerView(isNotes: false)
                     .aspectRatio(1, contentMode: .fit)
