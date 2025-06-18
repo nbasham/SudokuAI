@@ -1,10 +1,15 @@
 import Foundation
 import Combine
 
+enum CellAnimationType: Int {
+    case none, guess, grid, row, col, autoComplete
+}
+
 class GameViewModel: ObservableObject {
     @Published var userState: UserState
     @Published var solved: Bool = false
-    
+    @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
+
     init(puzzleId: String = "3") {
         self.userState = UserState(puzzleId: puzzleId)
 //        self.userState.note(5, at: 0)
@@ -20,6 +25,7 @@ class GameViewModel: ObservableObject {
         guard let index = userState.selectedCellIndex else { return }
         if userState.isSelectionEditable {
             let isCorrect = userState.guess(guess, at: index)
+            cellAnimations[index] = .guess
             if SystemSettings.showIncorrect && isCorrect {
                 
             }
@@ -47,6 +53,7 @@ class GameViewModel: ObservableObject {
         for index in indexes {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 * Double(count)) { [count = count, index = index] in
 //              play touch sound?
+                self.cellAnimations[index] = .autoComplete
                 _ = self.userState.guess(number, at: index)
                 if count == indexes.count {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
