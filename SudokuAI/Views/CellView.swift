@@ -24,10 +24,9 @@ struct CellView: View {
                     showEmitter = false
                 }
                 runScaleAnimation(to: 2.0, duration: animationTime) {}
-            case .grid:
-                runScaleAnimation(to: 0.8, duration: 0.25) {
-                }
-            case .none, .row, .col:
+            case .complete:
+                runScaleAnimation(to: 2.0, duration: animationTime) {}
+            case .none:
                 break
             }
             cellAnimation = .none
