@@ -5,14 +5,24 @@ enum CellAnimationType: Int {
     case none, guess, complete, autoComplete
 }
 
+enum CellAttributeType: Int {
+    case none, incorrect, initial
+}
+
 class GameViewModel: ObservableObject {
     @Published var userState: UserState
     @Published var solved: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
+    @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
 
     init(puzzleId: String = "1") {
         self.userState = UserState(puzzleId: puzzleId)
-//        self.userState.note(5, at: 0)
+        for index in 0...80 {
+            let puzzleValue = userState.puzzle.cells[index]
+            if (puzzleValue > 9) {
+                cellAttributes[index] = .initial
+            }
+        }
     }
     
     func setNote(_ note: Int) {
@@ -25,6 +35,7 @@ class GameViewModel: ObservableObject {
         guard let index = userState.selectedCellIndex else { return }
         if userState.isSelectionEditable {
             let isCorrect = userState.guess(guess, at: index)
+            cellAttributes[index] = isCorrect ? .none : .incorrect
             cellAnimations[index] = .guess
             
             // Check for completed row, col, or grid

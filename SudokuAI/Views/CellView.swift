@@ -5,6 +5,7 @@ struct CellView: View {
     @State private var showEmitter: Bool = false
     var cellValue: Int?
     @Binding var cellAnimation: CellAnimationType
+    @Binding var cellAttribute: CellAttributeType
     private let animationTime: Double = 0.36
 
     var body: some View {
@@ -40,8 +41,8 @@ struct CellView: View {
             if let v = cellValue {
                 if v > 0 {
                     Text("\(v)")
-                        .font(.system(size: 24, weight: .medium))
-                        .foregroundStyle(.black)
+                        .font(.system(size: 24, weight: cellAttribute == .initial ? .medium : .regular))
+                        .foregroundStyle(cellAttribute == .incorrect ? .red : .black)
                         .scaleEffect(scale)
                 } else if v < 0 {
                     NotesGridView(notesValue: v)
