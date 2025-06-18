@@ -108,4 +108,116 @@ class UserStateTests: XCTestCase {
             XCTAssertEqual(state.puzzle.cells[index], 8, "Each empty cell index should now have value 8.")
         }
     }
+    
+    func testIsSelectionEditableForNonEditableCell() {
+        let state = UserState(puzzleId: testPuzzleId)
+        let firstSeededIndex = state.puzzle.cells.firstIndex(where: { $0 > 9 })!
+        state.selectedCellIndex = firstSeededIndex
+        XCTAssertFalse(state.isSelectionEditable)
+    }
+    
+    func testIsSelectionEditableForEditableCell() {
+        let state = UserState(puzzleId: testPuzzleId)
+        let emptyIndex = firstEmptyCellIndex(state)!
+        state.selectedCellIndex = emptyIndex
+        XCTAssertTrue(state.isSelectionEditable)
+    }
+    
+    func testIsSolvedDetectsSolvedAndUnsolved() {
+        let state = UserState(puzzleId: testPuzzleId)
+        // Board is not solved at start
+        XCTAssertFalse(state.isSolved)
+        // Fill board with correct answers
+        for i in 0..<81 {
+            if state.puzzle.cells[i] < 10 {
+                _ = state.guess(state.puzzle.cells[i], at: i)
+            }
+        }
+        XCTAssertTrue(state.isSolved)
+        // Change one cell to incorrect
+        let wrongCell = firstEmptyCellIndex(state) ?? 0
+        let wrongValue = 1 + ((state.puzzle.cells[wrongCell] > 9 ? state.puzzle.cells[wrongCell] - 9 : state.puzzle.cells[wrongCell]) % 9)
+        _ = state.guess(wrongValue, at: wrongCell)
+        XCTAssertFalse(state.isSolved)
+    }
+    
+    func testFirstEditableCellIndexReturnsFirstEmptyCell() {
+        let state = UserState(puzzleId: testPuzzleId)
+        let expected = state.puzzle.cells.firstIndex { $0 <= 9 }
+        XCTAssertEqual(state.firstEditableCellIndex, expected)
+    }
+    
+    func testGuessWithInvalidNumber() {
+        let state = UserState(puzzleId: testPuzzleId)
+        let index = firstEmptyCellIndex(state) ?? 0
+        _ = state.guess(0, at: index)
+        XCTAssertNil(state.boardState[index])
+        _ = state.guess(10, at: index)
+        XCTAssertNil(state.boardState[index])
+    }
+    
+    func testNoteWithInvalidNumber() {
+        let state = UserState(puzzleId: testPuzzleId)
+        let idx = firstEmptyCellIndex(state) ?? 0
+        state.note(0, at: idx)
+        XCTAssertNil(state.boardState[idx])
+        state.note(10, at: idx)
+        XCTAssertNil(state.boardState[idx])
+    }
+    
+    func testCodableRoundTrip() throws {
+        let state = UserState(puzzleId: testPuzzleId)
+        state.selectedCellIndex = 2
+        state.selectedNumber = 4
+        _ = state.guess(5, at: 5)
+        let encoded = try JSONEncoder().encode(state)
+        let decoded = try JSONDecoder().decode(UserState.self, from: encoded)
+        XCTAssertEqual(state.puzzleId, decoded.puzzleId)
+        XCTAssertEqual(state.selectedCellIndex, decoded.selectedCellIndex)
+        XCTAssertEqual(state.selectedNumber, decoded.selectedNumber)
+        XCTAssertEqual(state.boardState, decoded.boardState)
+    }
+    
+    func testPersistenceRoundTrip() {
+        let key = "SudokuUserStateTestKeyPersist"    
+        let state = UserState(puzzleId: testPuzzleId)
+        state.selectedCellIndex = 10
+        state.selectedNumber = 7
+        _ = state.guess(3, at: 20)
+        state.note(5, at: 21)
+        state.save(toKey: key)
+        let loaded = UserState.load(fromKey: key)
+        XCTAssertNotNil(loaded)
+        XCTAssertEqual(state.puzzleId, loaded?.puzzleId)
+        XCTAssertEqual(state.selectedCellIndex, loaded?.selectedCellIndex)
+        XCTAssertEqual(state.selectedNumber, loaded?.selectedNumber)
+        XCTAssertEqual(state.boardState, loaded?.boardState)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+    
+    func testRestoreStateAfterMultipleGuessesAndNotes() {
+        let initial = UserState(puzzleId: testPuzzleId)
+        let idx = firstEmptyCellIndex(initial) ?? 0
+        initial.selectedCellIndex = idx
+        initial.selectedNumber = 2
+        _ = initial.guess(7, at: idx)
+        initial.note(4, at: idx + 1)
+        let restored = UserState(puzzleId: testPuzzleId, initialState: initial)
+        XCTAssertEqual(restored.selectedCellIndex, initial.selectedCellIndex)
+        XCTAssertEqual(restored.selectedNumber, initial.selectedNumber)
+        XCTAssertEqual(restored.boardState, initial.boardState)
+    }
+    
+    func testIndicesForEmptyCellsWithSolution() {
+        let state = UserState(puzzleId: testPuzzleId)
+        // Find which number is present at a specific empty cell
+        let idx = firstEmptyCellIndex(state) ?? 0
+        let solution = state.puzzle.cells[idx] > 9 ? state.puzzle.cells[idx] - 9 : state.puzzle.cells[idx]
+        let indices = state.indicesForEmptyCells(solutionIs: solution)
+        for i in indices {
+            XCTAssertNil(state.boardState[i])
+            let sol = state.puzzle.cells[i] > 9 ? state.puzzle.cells[i] - 9 : state.puzzle.cells[i]
+            XCTAssertEqual(sol, solution)
+        }
+    }
 }
