@@ -20,7 +20,9 @@ struct BoardView: View {
                     .frame(width: size, height: size)
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(0..<81, id: \.self) { index in
-                        CellView(cellValue: userState.boardState[index], cellAnimation: $viewModel.cellAnimations[index], cellAttribute:  $viewModel.cellAttributes[index])
+                        CellView(cellValue: userState.boardState[index],
+                                 cellAnimation: $viewModel.cellAnimations[index],
+                                 cellAttribute:  $viewModel.cellAttributes[index])
                             .aspectRatio(1, contentMode: .fit)
                             .onTapGesture {
                                 viewModel.boardTap(index: index)
@@ -121,7 +123,7 @@ struct SelectedNumberHighlightOverlay: View {
                             let row = idx / 9
                             let col = idx % 9
                             Rectangle()
-                                .fill(Color.yellow.opacity(0.15))
+                                .fill(Color.blue.opacity(0.45))
                                 .frame(width: cell, height: cell)
                                 .position(x: cell * (CGFloat(col) + 0.5),
                                           y: cell * (CGFloat(row) + 0.5))
