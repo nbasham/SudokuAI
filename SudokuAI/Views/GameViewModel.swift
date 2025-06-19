@@ -14,27 +14,36 @@ class GameViewModel: ObservableObject {
     @Published var solved: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
     @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
-    
+    @Published var noteAttributes: [[CellAttributeType]] = Array(repeating: Array(repeating: CellAttributeType.none, count: 9), count: 81)
+
     static var rowIndicesCache: [Int: [Int]] = [:]
     static var colIndicesCache: [Int: [Int]] = [:]
     static var gridIndicesCache: [Int: [Int]] = [:]
 
     init(puzzleId: String = "1") {
         self.userState = UserState(puzzleId: puzzleId)
-        for index in 0...80 {
-            let puzzleValue = userState.puzzle.cells[index]
-            if (puzzleValue > 9) {
-                cellAttributes[index] = .initial
-            }
-        }
     }
     
     func setNote(_ note: Int) {
         guard let index = userState.selectedCellIndex else { return }
         userState.note(note, at: index)
+        //  Calculate note attributes
+        let row = index / 9
+        let col = index % 9
+        let rowIndices = indicesForRow(row)
+        let colIndices = indicesForCol(col)
+        let gridIndices = indicesForGrid(of: index)
+        let allAffected = Set(rowIndices + colIndices + gridIndices)
+        for i in allAffected {
+            if let value = userState.boardState[i] {
+                if value == note { //NoteHelper.contains(note, cellValue: value) {
+                    noteAttributes[index][note-1] = .incorrect
+                }
+            }
+        }
     }
 
-    func userGuess(guess: Int) {
+    func setGuess(_ guess: Int) {
         guard !solved else { return }
         guard let index = userState.selectedCellIndex else { return }
         if userState.isSelectionEditable {

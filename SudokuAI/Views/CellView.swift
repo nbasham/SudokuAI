@@ -6,6 +6,7 @@ struct CellView: View {
     var cellValue: Int?
     @Binding var cellAnimation: CellAnimationType
     @Binding var cellAttribute: CellAttributeType
+    @Binding var noteAttributes: [CellAttributeType]
     private let animationTime: Double = 0.36
 
     var body: some View {
@@ -38,14 +39,14 @@ struct CellView: View {
     
     private var cellContent: some View {
         Group {
-            if let v = cellValue {
-                if v > 0 {
-                    Text("\(v)")
+            if let value = cellValue {
+                if value > 0 {
+                    Text("\(value)")
                         .font(.system(size: 24, weight: cellAttribute == .initial ? .medium : .regular))
                         .foregroundStyle(cellAttribute == .incorrect ? .red : .black)
                         .scaleEffect(scale)
-                } else if v < 0 {
-                    NotesGridView(notesValue: v)
+                } else if value < 0 {
+                    NotesGridView(value: value, attributes: noteAttributes)
                 }
             }
         }

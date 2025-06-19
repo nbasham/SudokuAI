@@ -14,7 +14,7 @@ struct PickerView: View {
                         if isNotes {
                             viewModel.setNote(number)
                         } else {
-                            viewModel.userGuess(guess: number)
+                            viewModel.setGuess(number)
                         }
                     }) {
                         Text("\(number)")

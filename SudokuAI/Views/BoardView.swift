@@ -22,7 +22,8 @@ struct BoardView: View {
                     ForEach(0..<81, id: \.self) { index in
                         CellView(cellValue: userState.boardState[index],
                                  cellAnimation: $viewModel.cellAnimations[index],
-                                 cellAttribute:  $viewModel.cellAttributes[index])
+                                 cellAttribute:  $viewModel.cellAttributes[index],
+                                 noteAttributes: $viewModel.noteAttributes[index])
                             .aspectRatio(1, contentMode: .fit)
                             .onTapGesture {
                                 viewModel.boardTap(index: index)
