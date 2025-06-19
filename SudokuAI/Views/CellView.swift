@@ -6,7 +6,7 @@ struct CellView: View {
     var cellValue: Int?
     @Binding var cellAnimation: CellAnimationType
     @Binding var cellAttribute: CellAttributeType
-    @Binding var noteAttributes: [CellAttributeType]
+    @Binding var noteAttributes: [NoteAttributeType]
     private let animationTime: Double = 0.36
 
     var body: some View {

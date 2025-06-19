@@ -9,12 +9,16 @@ enum CellAttributeType: Int {
     case none, incorrect, initial
 }
 
+enum NoteAttributeType: Int {
+    case none, conflicting
+}
+
 class GameViewModel: ObservableObject {
     @Published var userState: UserState
     @Published var solved: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
     @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
-    @Published var noteAttributes: [[CellAttributeType]] = Array(repeating: Array(repeating: CellAttributeType.none, count: 9), count: 81)
+    @Published var noteAttributes: [[NoteAttributeType]] = Array(repeating: Array(repeating: NoteAttributeType.none, count: 9), count: 81)
 
     static var rowIndicesCache: [Int: [Int]] = [:]
     static var colIndicesCache: [Int: [Int]] = [:]
@@ -37,7 +41,7 @@ class GameViewModel: ObservableObject {
         for i in allAffected {
             if let value = userState.boardState[i] {
                 if value == note { //NoteHelper.contains(note, cellValue: value) {
-                    noteAttributes[index][note-1] = .incorrect
+                    noteAttributes[index][note-1] = .conflicting
                 }
             }
         }
