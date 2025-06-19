@@ -8,6 +8,8 @@ struct ProgressView: View {
                 DigitGrid(digit: digit)
             }
         }
+        .padding(2)
+        .background(Color.white)
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
     }

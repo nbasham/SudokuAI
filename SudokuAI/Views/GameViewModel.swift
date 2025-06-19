@@ -14,6 +14,10 @@ class GameViewModel: ObservableObject {
     @Published var solved: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
     @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
+    
+    static var rowIndicesCache: [Int: [Int]] = [:]
+    static var colIndicesCache: [Int: [Int]] = [:]
+    static var gridIndicesCache: [Int: [Int]] = [:]
 
     init(puzzleId: String = "1") {
         self.userState = UserState(puzzleId: puzzleId)
@@ -38,6 +42,21 @@ class GameViewModel: ObservableObject {
             cellAttributes[index] = isCorrect ? .none : .incorrect
             cellAnimations[index] = .guess
             
+            // Remove notes of this number from grid, row, and col
+            let row = index / 9
+            let col = index % 9
+            let rowIndices = indicesForRow(row)
+            let colIndices = indicesForCol(col)
+            let gridIndices = indicesForGrid(of: index)
+            let allAffected = Set(rowIndices + colIndices + gridIndices).subtracting([index])
+            for i in allAffected {
+                if let value = userState.boardState[i], value < 0 {
+                    if NoteHelper.contains(guess, cellValue: value) {
+                        userState.note(guess, at: i)
+                    }
+                }
+            }
+            
             //  remove other occurences of guess in grid
             let indicies = indicesForGrid(of: index)
             for i in indicies {
@@ -49,8 +68,6 @@ class GameViewModel: ObservableObject {
             }
 
             // Check for completed row, col, or grid
-            let row = index / 9
-            let col = index % 9
             if isRowComplete(row) {
                 setAnimationForIndices(indicesForRow(row))
             }
@@ -123,14 +140,27 @@ class GameViewModel: ObservableObject {
     }
     
     private func indicesForRow(_ row: Int) -> [Int] {
-        return (0..<9).map { row * 9 + $0 }
+        if let cached = GameViewModel.rowIndicesCache[row] {
+            return cached
+        }
+        let indices = (0..<9).map { row * 9 + $0 }
+        GameViewModel.rowIndicesCache[row] = indices
+        return indices
     }
 
     private func indicesForCol(_ col: Int) -> [Int] {
-        return (0..<9).map { $0 * 9 + col }
+        if let cached = GameViewModel.colIndicesCache[col] {
+            return cached
+        }
+        let indices = (0..<9).map { $0 * 9 + col }
+        GameViewModel.colIndicesCache[col] = indices
+        return indices
     }
 
     private func indicesForGrid(of index: Int) -> [Int] {
+        if let cached = GameViewModel.gridIndicesCache[index] {
+            return cached
+        }
         let row = index / 9
         let col = index % 9
         let gridRow = (row / 3) * 3
@@ -141,6 +171,7 @@ class GameViewModel: ObservableObject {
                 indices.append((gridRow + r) * 9 + (gridCol + c))
             }
         }
+        GameViewModel.gridIndicesCache[index] = indices
         return indices
     }
     
@@ -205,4 +236,3 @@ class GameViewModel: ObservableObject {
         }
     }
 }
-
