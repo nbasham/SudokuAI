@@ -126,6 +126,9 @@ class GameViewModel: ObservableObject {
                 if userState.selectedNumber == guess {
                     userState.selectedNumber = nil
                 }
+                if lastGuess == guess {
+                    lastGuess = nil
+                }
             }
             
             if SystemSettings.showIncorrect && isCorrect {

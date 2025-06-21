@@ -6,6 +6,13 @@ struct ProgressView: View {
         HStack(spacing: 8) {
             ForEach(1...9, id: \.self) { digit in
                 DigitGrid(digit: digit).padding(.horizontal, 3)
+                    .onTapGesture {
+                        if digit == viewModel.userState.selectedNumber {
+                            viewModel.userState.selectedNumber = nil
+                        } else {
+                            viewModel.userState.selectedNumber = digit
+                        }
+                    }
             }
         }
         .padding(2)
