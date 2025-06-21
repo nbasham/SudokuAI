@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    let viewModel = GameViewModel()
+    
     var body: some View {
-        let viewModel = GameViewModel()
-        GameView()
-            .environmentObject(viewModel)
-            .environmentObject(viewModel.userState)
+        NavigationStack {
+            GameView()
+                .environmentObject(viewModel)
+                .environmentObject(viewModel.userState)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("\(viewModel.puzzleTitle)")
+                            .font(.headline)
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Menu {
+                            Button("Undo") { /* Undo action */ }
+                            Button("Settings") { /* Settings action */ }
+                        } label: {
+                            Image(systemName: "ellipsis.circle")
+                        }
+                    }
+                }
+        }
     }
 }
 

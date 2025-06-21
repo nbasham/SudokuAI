@@ -140,3 +140,13 @@ extension UserState {
     }
 }
 
+struct UndoState {
+    let selectedCellIndex: Int?
+    let selectedNumber: Int?
+    let boardState: [Int?]
+    init(state: UserState) {
+        self.selectedCellIndex = state.selectedCellIndex
+        self.selectedNumber = state.selectedNumber
+        self.boardState = state.boardState
+    }
+}

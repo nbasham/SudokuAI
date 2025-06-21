@@ -5,7 +5,7 @@ struct ProgressView: View {
     var body: some View {
         HStack(spacing: 8) {
             ForEach(1...9, id: \.self) { digit in
-                DigitGrid(digit: digit)
+                DigitGrid(digit: digit).padding(.horizontal, 3)
             }
         }
         .padding(2)
@@ -42,14 +42,14 @@ struct ProgressView: View {
         }
         
         var body: some View {
-            VStack(spacing: 1) {
+            VStack(spacing: 0) {
                 ForEach(0..<3) { row in
-                    HStack(spacing: 1) {
+                    HStack(spacing: 0) {
                         ForEach(0..<3) { col in
                             let subgrid = row * 3 + col
                             Rectangle()
                                 .fill(subgridHasDigit(subgrid: subgrid) ? Color.accentColor.opacity(0.5) : Color.clear)
-                                .border(Color.gray.opacity(0.4))
+                                .border(Color.black.opacity(0.44))
                                 .aspectRatio(1, contentMode: .fit)
                         }
                     }

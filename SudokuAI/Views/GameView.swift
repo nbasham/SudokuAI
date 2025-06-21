@@ -25,7 +25,7 @@ struct GameView: View {
             .padding()
             Spacer()
         }
-        .background(Color.gray.opacity(0.3))
+        .background(Color.white.opacity(0.3))
         .alert("Puzzle Solved!", isPresented: $viewModel.solved) {
             Button("OK", role: .cancel) {
             }

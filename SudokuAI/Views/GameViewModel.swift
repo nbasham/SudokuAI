@@ -23,6 +23,18 @@ class GameViewModel: ObservableObject {
     static var rowIndicesCache: [Int: [Int]] = [:]
     static var colIndicesCache: [Int: [Int]] = [:]
     static var gridIndicesCache: [Int: [Int]] = [:]
+    
+    var puzzleTitle: String {
+        let revealedCount = userState.boardState.compactMap { $0 }.filter { $0 > 9 }.count
+        if revealedCount >= 36 {
+            return "Easy"
+        } else if revealedCount >= 33 {
+            return "Medium"
+        } else if revealedCount >= 30 {
+            return "Hard"
+        }
+        return "Evil"
+    }
 
     init(puzzleId: String = "1") {
         self.userState = UserState(puzzleId: puzzleId)
@@ -249,3 +261,4 @@ class GameViewModel: ObservableObject {
         }
     }
 }
+
