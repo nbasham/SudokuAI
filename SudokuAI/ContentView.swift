@@ -22,7 +22,11 @@ struct ContentView: View {
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
-                            Button("Undo") { /* Undo action */ }
+                            Button("Undo") {
+                                viewModel.undoManager.undo()
+                                let state = viewModel.undoManager.currentItem
+                                viewModel.userState.applyUndo(state: state)
+                            }
                             Button("Settings") { /* Settings action */ }
                         } label: {
                             Image(systemName: "ellipsis.circle")

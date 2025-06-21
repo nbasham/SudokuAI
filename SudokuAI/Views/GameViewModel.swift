@@ -13,12 +13,25 @@ enum NoteAttributeType: Int {
     case none, conflicting
 }
 
+struct UndoState {
+    let selectedCellIndex: Int?
+    let selectedNumber: Int?
+    let boardState: [Int?]
+    init(state: UserState) {
+        self.selectedCellIndex = state.selectedCellIndex
+        self.selectedNumber = state.selectedNumber
+        self.boardState = state.boardState
+    }
+}
+
 class GameViewModel: ObservableObject {
     @Published var userState: UserState
     @Published var solved: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
     @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
     @Published var noteAttributes: [[NoteAttributeType]] = Array(repeating: Array(repeating: NoteAttributeType.none, count: 9), count: 81)
+    var undoManager: UndoHistory<UndoState>
+    var lastGuess: Int?
 
     static var rowIndicesCache: [Int: [Int]] = [:]
     static var colIndicesCache: [Int: [Int]] = [:]
@@ -37,12 +50,16 @@ class GameViewModel: ObservableObject {
     }
 
     init(puzzleId: String = "1") {
-        self.userState = UserState(puzzleId: puzzleId)
+        let state = UserState(puzzleId: puzzleId)
+        self.userState = state
+        self.undoManager = UndoHistory(initialValue: UndoState(state: state))
     }
     
     func setNote(_ note: Int) {
         guard let index = userState.selectedCellIndex else { return }
         userState.note(note, at: index)
+        lastGuess = -note
+        undoManager.currentItem = UndoState(state: userState)
         //  Calculate note attributes
         let row = index / 9
         let col = index % 9
@@ -64,6 +81,8 @@ class GameViewModel: ObservableObject {
         guard let index = userState.selectedCellIndex else { return }
         if userState.isSelectionEditable {
             let isCorrect = userState.guess(guess, at: index)
+            lastGuess = guess
+            undoManager.currentItem = UndoState(state: userState)
             cellAttributes[index] = isCorrect ? .none : .incorrect
             cellAnimations[index] = .guess
             
@@ -149,6 +168,17 @@ class GameViewModel: ObservableObject {
         }
     }
 
+    func boardDoubleTap(index: Int) {
+        if userState.isEditable(index: index), let lastGuess {
+            userState.selectedCellIndex = index
+            if lastGuess > 0 {
+                setGuess(lastGuess)
+            } else {
+                setNote(-lastGuess)
+            }
+        }
+    }
+
     func boardTap(index: Int) {
         if userState.isEditable(index: index) {
             userState.selectedCellIndex = index
@@ -163,7 +193,7 @@ class GameViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func indicesForRow(_ row: Int) -> [Int] {
         if let cached = GameViewModel.rowIndicesCache[row] {
             return cached
@@ -262,3 +292,24 @@ class GameViewModel: ObservableObject {
     }
 }
 
+public struct UndoHistory<A> {
+    private let initialValue: A
+    private var history: [A] = []
+    public var currentItem: A {
+        get {
+            return history.last ?? initialValue
+        }
+        set {
+            history.append(newValue)
+        }
+    }
+    
+    public init(initialValue: A) {
+        self.initialValue = initialValue
+    }
+    
+    public mutating func undo() {
+        guard !history.isEmpty else { return }
+        history.removeLast()
+    }
+}

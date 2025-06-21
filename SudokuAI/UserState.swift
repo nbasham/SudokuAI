@@ -90,6 +90,12 @@ class UserState: ObservableObject, Codable {
     func isEditable(index: Int) -> Bool {
         return puzzle.cells[index] <= 9
     }
+    
+    func applyUndo(state: UndoState) {
+        self.boardState = state.boardState
+        self.selectedCellIndex = state.selectedCellIndex
+        self.selectedNumber = state.selectedNumber
+    }
 
     private func updateCell(_ index: Int, with value: Int?) {
         guard index >= 0 && index < 81 else { return }
@@ -137,16 +143,5 @@ extension UserState {
         if let data = try? JSONEncoder().encode(self) {
             UserDefaults.standard.set(data, forKey: key)
         }
-    }
-}
-
-struct UndoState {
-    let selectedCellIndex: Int?
-    let selectedNumber: Int?
-    let boardState: [Int?]
-    init(state: UserState) {
-        self.selectedCellIndex = state.selectedCellIndex
-        self.selectedNumber = state.selectedNumber
-        self.boardState = state.boardState
     }
 }

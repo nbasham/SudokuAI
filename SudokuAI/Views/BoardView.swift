@@ -25,7 +25,10 @@ struct BoardView: View {
                                  cellAttribute:  $viewModel.cellAttributes[index],
                                  noteAttributes: $viewModel.noteAttributes[index])
                             .aspectRatio(1, contentMode: .fit)
-                            .onTapGesture {
+                            .onTapGesture(count: 2) {
+                                viewModel.boardDoubleTap(index: index)
+                            }
+                            .onTapGesture(count: 1) {
                                 viewModel.boardTap(index: index)
                             }
                     }
