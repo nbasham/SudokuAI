@@ -18,11 +18,12 @@ struct PickerView: View {
                         }
                     }) {
                         Text("\(number)")
-                            .font(isNotes ? .title3 : .title)
+                            .font(isNotes ? .title3 : .title2)
                             .foregroundStyle(.primary)
+                            .bold(!isNotes)
                             .frame(width: 40, height: 40)
                             .background(Color.gray.opacity(0.2))
-                            .clipShape(Circle())
+                            .clipShape(RoundedRectangle(cornerRadius: 7))
                     }
                 }
             }
@@ -31,5 +32,8 @@ struct PickerView: View {
 }
 
 #Preview {
-    PickerView(isNotes: true)
+    HStack {
+        PickerView(isNotes: false)
+        PickerView(isNotes: true)
+    }
 }

@@ -38,7 +38,7 @@ class GameViewModel: ObservableObject {
     static var gridIndicesCache: [Int: [Int]] = [:]
     
     var puzzleTitle: String {
-        let revealedCount = userState.boardState.compactMap { $0 }.filter { $0 > 9 }.count
+        let revealedCount = userState.puzzle.cells.filter { $0 > 9 }.count
         if revealedCount >= 36 {
             return "Easy"
         } else if revealedCount >= 33 {

@@ -5,7 +5,10 @@ struct ProgressView: View {
     var body: some View {
         HStack(spacing: 8) {
             ForEach(1...9, id: \.self) { digit in
-                DigitGrid(digit: digit).padding(.horizontal, 3)
+                VStack(spacing: 0) {
+                    DigitGrid(digit: digit).padding(.horizontal, 3)
+                    DigitNumber(digit: digit)
+                }
                     .onTapGesture {
                         if digit == viewModel.userState.selectedNumber {
                             viewModel.userState.selectedNumber = nil
@@ -20,7 +23,16 @@ struct ProgressView: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
     }
-    
+
+    struct DigitNumber: View {
+        let digit: Int
+        var body: some View {
+            Text("\(digit)")
+                .font(.callout.bold())
+                .foregroundStyle(Color.accentColor.opacity(0.5))
+        }
+    }
+
     struct DigitGrid: View {
         @EnvironmentObject var viewModel: GameViewModel
         let digit: Int
@@ -61,11 +73,15 @@ struct ProgressView: View {
                         }
                     }
                 }
-                Text("\(digit)")
-                    .font(.headline.bold())
-                    .foregroundStyle(Color.primary.opacity(0.7))
-                    .padding(2)
            }
         }
     }
+}
+
+#Preview {
+    let viewModel = GameViewModel()
+    let userState = viewModel.userState
+    ProgressView()
+        .environmentObject(viewModel)
+        .environmentObject(userState)
 }

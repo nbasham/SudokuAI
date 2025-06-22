@@ -7,10 +7,7 @@ struct GameView: View {
     @State private var showSolvedAlert = false
     var body: some View {
         VStack {
-            ProgressView()
-                .environmentObject(viewModel)
-                .padding(.top)
-
+            Spacer()
             BoardView()
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1, contentMode: .fit)
@@ -23,7 +20,10 @@ struct GameView: View {
                     .aspectRatio(1, contentMode: .fit)
             }
             .padding()
-            Spacer()
+
+            ProgressView()
+                .environmentObject(viewModel)
+                .padding(.top)
         }
         .background(Color.white.opacity(0.3))
         .alert("Puzzle Solved!", isPresented: $viewModel.solved) {
