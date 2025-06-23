@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 class UserState: ObservableObject, Codable {
-    let puzzleId: SudokuPuzzle.ID
+    var puzzleId: SudokuPuzzle.ID
     @Published var selectedCellIndex: Int?
     @Published var selectedNumber: Int?
     @Published private(set) var boardState: [Int?]
@@ -77,6 +77,9 @@ class UserState: ObservableObject, Codable {
         guard !emptyIndices.isEmpty else { return nil }
         let missingNumbers = emptyIndices.map { (puzzle.cells[$0] > 9 ? puzzle.cells[$0] - 9 : puzzle.cells[$0]) }
         let first = missingNumbers.first!
+        if missingNumbers.allSatisfy({ $0 == first }) {
+            print(boardState)
+        }
         return missingNumbers.allSatisfy { $0 == first } ? first : nil
     }
     
@@ -142,6 +145,24 @@ extension UserState {
     func save(toKey key: String) {
         if let data = try? JSONEncoder().encode(self) {
             UserDefaults.standard.set(data, forKey: key)
+        }
+    }
+}
+
+// Extension for UserState to add reset method as required by gameOver()
+extension UserState {
+    func reset(toPuzzleId puzzleId: String) {
+        self.puzzleId = puzzleId
+        for index in 0...80 {
+            let puzzleValue = puzzle.cells[index]
+            if (puzzleValue > 9) {
+                self.boardState[index] = puzzleValue - 9
+            } else {
+                self.boardState[index] = nil
+            }
+            self.selectedCellIndex = firstEditableCellIndex
+            self.selectedCellIndex = nil
+            self.selectedNumber = nil
         }
     }
 }

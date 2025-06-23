@@ -55,6 +55,17 @@ class GameViewModel: ObservableObject {
         self.undoManager = UndoHistory(initialValue: UndoState(state: state))
     }
     
+    func gameOver() {
+        let newPuzzleId = UUID().uuidString
+        userState.reset(toPuzzleId: newPuzzleId)
+        self.solved = false
+        self.cellAnimations = Array(repeating: .none, count: 81)
+        self.cellAttributes = Array(repeating: .none, count: 81)
+        self.noteAttributes = Array(repeating: Array(repeating: .none, count: 9), count: 81)
+        self.undoManager = UndoHistory(initialValue: UndoState(state: userState))
+        self.lastGuess = nil
+    }
+    
     func setNote(_ note: Int) {
         guard let index = userState.selectedCellIndex else { return }
         userState.note(note, at: index)

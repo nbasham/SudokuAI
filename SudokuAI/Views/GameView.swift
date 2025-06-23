@@ -1,7 +1,6 @@
 import SwiftUI
 
 
-
 struct GameView: View {
     @EnvironmentObject var viewModel: GameViewModel
     @State private var showSolvedAlert = false
@@ -28,6 +27,7 @@ struct GameView: View {
         .background(Color.white.opacity(0.3))
         .alert("Puzzle Solved!", isPresented: $viewModel.solved) {
             Button("OK", role: .cancel) {
+                viewModel.gameOver()
             }
         }
     }
