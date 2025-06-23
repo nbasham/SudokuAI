@@ -49,7 +49,7 @@ class GameViewModel: ObservableObject {
         return "Evil"
     }
 
-    init(puzzleId: String = "1") {
+    init(puzzleId: String) {
         let state = UserState(puzzleId: puzzleId)
         self.userState = state
         self.undoManager = UndoHistory(initialValue: UndoState(state: state))
@@ -125,6 +125,7 @@ class GameViewModel: ObservableObject {
                 setAnimationForIndices(indicesForNumber(guess))
                 if userState.selectedNumber == guess {
                     userState.selectedNumber = nil
+                    lastGuess = nil
                 }
                 if lastGuess == guess {
                     lastGuess = nil
@@ -192,6 +193,7 @@ class GameViewModel: ObservableObject {
                 } else {
                     userState.selectedNumber = value
                 }
+                lastGuess = userState.selectedNumber
             } else {
             }
         }

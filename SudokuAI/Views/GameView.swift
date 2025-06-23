@@ -34,7 +34,7 @@ struct GameView: View {
 }
 
 #Preview {
-    let viewModel = GameViewModel()
+    let viewModel = GameViewModel(puzzleId: "1")
     GameView()
         .environmentObject(viewModel)
 }

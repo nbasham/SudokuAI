@@ -141,7 +141,7 @@ struct SelectedNumberHighlightOverlay: View {
 }
 
 #Preview {
-    let viewModel = GameViewModel()
+    let viewModel = GameViewModel(puzzleId: "1")
     let userState = viewModel.userState
     BoardView()
         .environmentObject(viewModel)

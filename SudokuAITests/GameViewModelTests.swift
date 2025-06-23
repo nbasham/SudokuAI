@@ -4,7 +4,7 @@ import XCTest
 @MainActor
 class GameViewModelTests: XCTestCase {
     func testInitialization() async throws {
-        let viewModel = GameViewModel()
+        let viewModel = GameViewModel(puzzleId: "1")
         XCTAssertEqual(viewModel.userState.puzzleId, "1")
         XCTAssertFalse(viewModel.solved)
         XCTAssertEqual(viewModel.userState.boardState.count, 81)
@@ -12,7 +12,7 @@ class GameViewModelTests: XCTestCase {
     }
 
     func testSetGuessUpdatesBoardState() async throws {
-        let viewModel = GameViewModel()
+        let viewModel = GameViewModel(puzzleId: "1")
         let editableIndex = viewModel.userState.firstEditableCellIndex
         viewModel.userState.selectedCellIndex = editableIndex
         let guess = 5
@@ -28,7 +28,7 @@ class GameViewModelTests: XCTestCase {
     }
 
     func testSetNoteUpdatesNoteAttributes() async throws {
-        let viewModel = GameViewModel()
+        let viewModel = GameViewModel(puzzleId: "1")
         let editableIndex = viewModel.userState.firstEditableCellIndex
         viewModel.userState.selectedCellIndex = editableIndex
         let note = 2
@@ -42,7 +42,7 @@ class GameViewModelTests: XCTestCase {
     }
 
     func testBoardTapUpdatesSelectedCellIndex() async throws {
-        let viewModel = GameViewModel()
+        let viewModel = GameViewModel(puzzleId: "1")
         let editableIndex = viewModel.userState.firstEditableCellIndex
         XCTAssertNotNil(editableIndex)
         viewModel.boardTap(index: editableIndex!)
@@ -50,7 +50,7 @@ class GameViewModelTests: XCTestCase {
     }
 
     func testSolvingBoardSetsSolvedTrue() async throws {
-        let viewModel = GameViewModel()
+        let viewModel = GameViewModel(puzzleId: "1")
         // Fill all editable cells with the correct answer
         for idx in 0..<81 {
             if viewModel.userState.isCellEditable(idx) {

@@ -7,7 +7,7 @@ class UserState: ObservableObject, Codable {
     @Published var selectedNumber: Int?
     @Published private(set) var boardState: [Int?]
     var puzzle: SudokuPuzzle {
-        PuzzleStore.getPuzze(id: puzzleId)
+        PuzzleStore.getPuzzle(id: puzzleId)
     }
     
     enum CodingKeys: String, CodingKey {

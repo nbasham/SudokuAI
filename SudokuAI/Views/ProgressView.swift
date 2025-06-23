@@ -15,6 +15,7 @@ struct ProgressView: View {
                         } else {
                             viewModel.userState.selectedNumber = digit
                         }
+                        viewModel.lastGuess = viewModel.userState.selectedNumber
                     }
             }
         }
@@ -79,7 +80,7 @@ struct ProgressView: View {
 }
 
 #Preview {
-    let viewModel = GameViewModel()
+    let viewModel = GameViewModel(puzzleId: "1")
     let userState = viewModel.userState
     ProgressView()
         .environmentObject(viewModel)
