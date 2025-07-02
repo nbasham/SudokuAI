@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Playgrounds
 
 struct ContentView: View {
     let viewModel = GameViewModel(puzzleId: UUID().uuidString)
