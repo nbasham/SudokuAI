@@ -176,8 +176,10 @@ class GameViewModel: ObservableObject {
                 if let remainingNumber = userState.onlyRemainingNumber,
                    SystemSettings.completeLastNumber {
                     let indexes = userState.indicesForEmptyCells(solutionIs: remainingNumber)
-                    autofill(indexes: indexes, number: remainingNumber) {
-                        self.endGame()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // experimenting with leaving a slight delay before auto complete
+                        self.autofill(indexes: indexes, number: remainingNumber) {
+                            self.endGame()
+                        }
                     }
                 }
             }
