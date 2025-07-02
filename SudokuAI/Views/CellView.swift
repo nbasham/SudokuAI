@@ -3,6 +3,7 @@ import SwiftUI
 struct CellView: View {
     @State private var scale: CGFloat = 1.0
     @State private var showEmitter: Bool = false
+    @State private var rotationY: Double = 0.0
     var cellValue: Int?
     @Binding var cellAnimation: CellAnimationType
     @Binding var cellAttribute: CellAttributeType
@@ -27,7 +28,7 @@ struct CellView: View {
                 }
                 runScaleAnimation(to: 2.0, duration: animationTime) {}
             case .complete:
-                runScaleAnimation(to: 2.0, duration: animationTime) {}
+                runRotateAnimation(to: 360, duration: animationTime*2) {}
             case .none:
                 break
             }
@@ -45,6 +46,7 @@ struct CellView: View {
                         .font(.system(size: 24, weight: cellAttribute == .initial ? .medium : .regular))
                         .foregroundStyle(cellAttribute == .incorrect ? .red : .black)
                         .scaleEffect(scale)
+                        .rotation3DEffect(.degrees(rotationY), axis: (x: 0, y: 1, z: 0))
                 } else if value < 0 {
                     NotesGridView(value: value, attributes: noteAttributes)
                 }
@@ -62,6 +64,21 @@ struct CellView: View {
                 withAnimation(.easeInOut(duration: duration)) {
                     scale = 1.0
                 }
+                completion()
+            }
+        }
+    }
+    
+    /// Animates the number with a full Y-axis rotation.
+    private func runRotateAnimation(to targetRotation: Double, duration: Double, completion: @escaping () -> Void) {
+        withAnimation(.easeInOut(duration: duration)) {
+            rotationY = targetRotation
+        }
+        Task {
+            try? await Task.sleep(nanoseconds: UInt64(duration * 1_000_000_000))
+            await MainActor.run {
+                // Instantly reset rotationY to 0 without animation, so the next animation can start fresh.
+                rotationY = 0
                 completion()
             }
         }

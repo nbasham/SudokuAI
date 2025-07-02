@@ -2,11 +2,23 @@ import Foundation
 import Combine
 
 enum CellAnimationType: Int {
-    case none, guess, complete, autoComplete
+    /// No animation is applied to the cell.
+    case none
+    /// The cell animates to indicate a guess was entered.
+    case guess
+    /// The cell animates to show completion of a row, column, grid, or number.
+    case complete
+    /// The cell animates to indicate it was auto-filled by the system.
+    case autoComplete
 }
 
 enum CellAttributeType: Int {
-    case none, incorrect, initial
+    /// Default state, no special attribute is applied to the cell.
+    case none
+    /// The cell is marked as having an incorrect guess.
+    case incorrect
+    /// The cell is an initial, given value in the puzzle (not editable).
+    case initial
 }
 
 enum NoteAttributeType: Int {
@@ -329,3 +341,4 @@ public struct UndoHistory<A> {
         history.removeLast()
     }
 }
+
