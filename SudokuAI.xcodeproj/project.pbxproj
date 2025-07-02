@@ -18,7 +18,7 @@
 
 /* Begin PBXFileReference section */
 		20224D892DFF8BDC001D86B1 /* SudokuAITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SudokuAITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		20F280EF2DF79A90001F8CC3 /* SudokuAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SudokuAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20F280EF2DF79A90001F8CC3 /* SudokuDoh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SudokuDoh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -64,7 +64,7 @@
 		20F280F02DF79A90001F8CC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				20F280EF2DF79A90001F8CC3 /* SudokuAI.app */,
+				20F280EF2DF79A90001F8CC3 /* SudokuDoh.app */,
 				20224D892DFF8BDC001D86B1 /* SudokuAITests.xctest */,
 			);
 			name = Products;
@@ -115,7 +115,7 @@
 			packageProductDependencies = (
 			);
 			productName = SudokuAI;
-			productReference = 20F280EF2DF79A90001F8CC3 /* SudokuAI.app */;
+			productReference = 20F280EF2DF79A90001F8CC3 /* SudokuDoh.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -382,8 +382,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = normanbasham.SudokuAI;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = normanbasham.SudokuDoh;
+				PRODUCT_NAME = SudokuDoh;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -414,8 +414,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = normanbasham.SudokuAI;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = normanbasham.SudokuDoh;
+				PRODUCT_NAME = SudokuDoh;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;

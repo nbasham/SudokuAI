@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "20F280EE2DF79A90001F8CC3"
-               BuildableName = "SudokuAI.app"
+               BuildableName = "SudokuDoh.app"
                BlueprintName = "SudokuAI"
                ReferencedContainer = "container:SudokuAI.xcodeproj">
             </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F280EE2DF79A90001F8CC3"
-            BuildableName = "SudokuAI.app"
+            BuildableName = "SudokuDoh.app"
             BlueprintName = "SudokuAI"
             ReferencedContainer = "container:SudokuAI.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "20F280EE2DF79A90001F8CC3"
-            BuildableName = "SudokuAI.app"
+            BuildableName = "SudokuDoh.app"
             BlueprintName = "SudokuAI"
             ReferencedContainer = "container:SudokuAI.xcodeproj">
          </BuildableReference>
