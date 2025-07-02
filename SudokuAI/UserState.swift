@@ -73,14 +73,18 @@ class UserState: ObservableObject, Codable {
     
     /// Returns the number that should fill all empty cells if and only if all unguessed cells have the same solution number in the puzzle. Otherwise, returns nil.
     var onlyRemainingNumber: Int? {
-        let emptyIndices = boardState.indices.filter { boardState[$0] == nil }
-        guard !emptyIndices.isEmpty else { return nil }
-        let missingNumbers = emptyIndices.map { (puzzle.cells[$0] > 9 ? puzzle.cells[$0] - 9 : puzzle.cells[$0]) }
-        let first = missingNumbers.first!
-        if missingNumbers.allSatisfy({ $0 == first }) {
-            print(boardState)
+        // Indices where user answer does not match the solution (i.e., still incomplete)
+        let incompleteIndices = boardState.indices.filter { idx in
+            let solution = (puzzle.cells[idx] > 9 ? puzzle.cells[idx] - 9 : puzzle.cells[idx])
+            return boardState[idx] != solution
         }
-        return missingNumbers.allSatisfy { $0 == first } ? first : nil
+        guard !incompleteIndices.isEmpty else { return nil }
+        let solutionNumbers = incompleteIndices.map { idx in
+            let val = puzzle.cells[idx]
+            return (val > 9 ? val - 9 : val)
+        }
+        let first = solutionNumbers.first!
+        return solutionNumbers.allSatisfy { $0 == first } ? first : nil
     }
     
     /// Returns the indices of all empty cells whose solution in the puzzle is the given number.
