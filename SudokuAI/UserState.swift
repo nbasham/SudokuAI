@@ -5,6 +5,7 @@ class UserState: ObservableObject, Codable {
     var puzzleId: SudokuPuzzle.ID
     @Published var selectedCellIndex: Int?
     @Published var selectedNumber: Int?
+    @Published var elapsed: TimeInterval = 0
     @Published private(set) var boardState: [Int?]
     var puzzle: SudokuPuzzle {
         PuzzleStore.getPuzzle(id: puzzleId)
@@ -14,6 +15,7 @@ class UserState: ObservableObject, Codable {
         case puzzleId
         case selectedCellIndex
         case selectedNumber
+        case elapsed
         case boardState
     }
 
@@ -22,6 +24,7 @@ class UserState: ObservableObject, Codable {
         puzzleId = try container.decode(SudokuPuzzle.ID.self, forKey: .puzzleId)
         selectedCellIndex = try container.decodeIfPresent(Int.self, forKey: .selectedCellIndex)
         selectedNumber = try container.decodeIfPresent(Int.self, forKey: .selectedNumber)
+        elapsed = try container.decode(Double.self, forKey: .elapsed)
         boardState = try container.decode([Int?].self, forKey: .boardState)
     }
 
@@ -30,6 +33,7 @@ class UserState: ObservableObject, Codable {
         try container.encode(puzzleId, forKey: .puzzleId)
         try container.encode(selectedCellIndex, forKey: .selectedCellIndex)
         try container.encode(selectedNumber, forKey: .selectedNumber)
+        try container.encode(elapsed, forKey: .elapsed)
         try container.encode(boardState, forKey: .boardState)
     }
     

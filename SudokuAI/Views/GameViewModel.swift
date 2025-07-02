@@ -44,6 +44,7 @@ class GameViewModel: ObservableObject {
     @Published var noteAttributes: [[NoteAttributeType]] = Array(repeating: Array(repeating: NoteAttributeType.none, count: 9), count: 81)
     var undoManager: UndoHistory<UndoState>
     var lastGuess: Int?
+    let timer: GameTimer
 
     static var rowIndicesCache: [Int: [Int]] = [:]
     static var colIndicesCache: [Int: [Int]] = [:]
@@ -65,8 +66,20 @@ class GameViewModel: ObservableObject {
         let state = UserState(puzzleId: puzzleId)
         self.userState = state
         self.undoManager = UndoHistory(initialValue: UndoState(state: state))
+        self.timer = GameTimer()
     }
     
+    func startGame() {
+        timer.start { newTime in
+            self.userState.elapsed = newTime
+        }
+    }
+    
+    func endGame() {
+        solved = true
+        timer.stop()
+    }
+
     func gameOver() {
         let newPuzzleId = UUID().uuidString
         userState.reset(toPuzzleId: newPuzzleId)
@@ -164,13 +177,12 @@ class GameViewModel: ObservableObject {
                    SystemSettings.completeLastNumber {
                     let indexes = userState.indicesForEmptyCells(solutionIs: remainingNumber)
                     autofill(indexes: indexes, number: remainingNumber) {
-                        self.solved = true
+                        self.endGame()
                     }
                 }
             }
             if userState.isSolved {
-                //  Stop timer
-                solved = true
+                self.endGame()
             }
         }
     }
