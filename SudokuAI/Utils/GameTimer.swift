@@ -13,7 +13,7 @@ class GameTimer {
     private var startTime: Date?
     private var pausedTime: TimeInterval = 0
     private(set) var elapsed: TimeInterval = 0
-    private var isRunning = false
+    private(set) var isRunning = false
     private var wasPausedBySystem = false
     private var updateHandler: ((TimeInterval) -> Void)?
 
@@ -42,6 +42,14 @@ class GameTimer {
         pausedTime = 0
         elapsed = 0
         wasPausedBySystem = false
+    }
+
+    func toggle() {
+        if isRunning {
+            pause()
+        } else {
+            resume()
+        }
     }
 
     func pause() {

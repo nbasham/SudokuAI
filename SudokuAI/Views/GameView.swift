@@ -7,54 +7,27 @@ struct GameView: View {
     @State private var showSolvedAlert = false
     @State private var showSolvedSheet = false
     var body: some View {
-        GeometryReader { geometry in
-            if geometry.size.width > geometry.size.height {     //  LANDSCAPE
-                HStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        BoardView()
-                        ControlView()
-                            .environmentObject(viewModel)
-                            .environmentObject(userState)
-                            .padding(.top, 2)
-                    }
-                    .padding(.top)
-                    VStack {
-                        ProgressView()
-                            .environmentObject(viewModel)
-                            .padding(.top)
-                        HStack {
-                            PickerView(isNotes: false)
-                                .aspectRatio(1, contentMode: .fit)
-                            Spacer(minLength: 48)
-                            PickerView(isNotes: true)
-                                .aspectRatio(1, contentMode: .fit)
-                        }
-                        .padding()
-                   }
+        ZStack {
+            GeometryReader { geometry in
+                if geometry.size.width > geometry.size.height {
+                    GameViewLandscape()
+                } else {
+                    GameViewPortrait()
                 }
-            } else {     //  PORTRAIT
-                VStack {
-                    Spacer()
-                    BoardView()
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
-                    ControlView()
-                        .environmentObject(viewModel)
-                        .environmentObject(userState)
-
-                    HStack {
-                        PickerView(isNotes: false)
-                            .aspectRatio(1, contentMode: .fit)
-                        Spacer(minLength: 48)
-                        PickerView(isNotes: true)
-                            .aspectRatio(1, contentMode: .fit)
+            }
+            if viewModel.isPaused {
+                Color(.systemGray4)
+                    .opacity(0.8)
+                    .ignoresSafeArea()
+                    .overlay(
+                        Text("Paused")
+                            .font(.largeTitle.bold())
+                            .foregroundColor(.white)
+                    )
+                    .onTapGesture {
+                        viewModel.pauseResume()
                     }
-                    .padding()
-
-                    ProgressView()
-                        .environmentObject(viewModel)
-                        .padding(.top)
-                }            }
+            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -72,6 +45,67 @@ struct GameView: View {
                 .buttonStyle(.borderedProminent)
             }
             .presentationDetents([.fraction(0.95)])
+        }
+    }
+}
+
+struct GameViewLandscape: View {
+    @EnvironmentObject var viewModel: GameViewModel
+    @EnvironmentObject var userState: UserState
+
+    var body: some View {
+        HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                BoardView()
+                ControlView()
+                    .environmentObject(viewModel)
+                    .environmentObject(userState)
+                    .padding(.top, 2)
+            }
+            .padding(.top)
+            VStack {
+                ProgressView()
+                    .environmentObject(viewModel)
+                    .padding(.top)
+                HStack {
+                    PickerView(isNotes: false)
+                        .aspectRatio(1, contentMode: .fit)
+                    Spacer(minLength: 48)
+                    PickerView(isNotes: true)
+                        .aspectRatio(1, contentMode: .fit)
+                }
+                .padding()
+            }
+        }
+    }
+}
+
+struct GameViewPortrait: View {
+    @EnvironmentObject var viewModel: GameViewModel
+    @EnvironmentObject var userState: UserState
+
+    var body: some View {
+        VStack {
+            Spacer()
+            BoardView()
+                .frame(maxWidth: .infinity)
+                .aspectRatio(1, contentMode: .fit)
+            ControlView()
+                .environmentObject(viewModel)
+                .environmentObject(userState)
+
+            HStack {
+                PickerView(isNotes: false)
+                    .aspectRatio(1, contentMode: .fit)
+                Spacer(minLength: 48)
+                PickerView(isNotes: true)
+                    .aspectRatio(1, contentMode: .fit)
+            }
+            .padding()
+
+            ProgressView()
+                .environmentObject(viewModel)
+                .padding(.top)
         }
     }
 }

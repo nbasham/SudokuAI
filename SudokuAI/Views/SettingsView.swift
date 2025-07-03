@@ -55,6 +55,7 @@ struct SettingsView: View {
             viewModel.undo()
         }
         .onDisappear {
+            viewModel.pauseResume()
             if selectedLevel != originalLevel {
                 viewModel.gameOver()
             }

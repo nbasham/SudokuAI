@@ -40,6 +40,7 @@ struct UndoState {
 
 class GameViewModel: ObservableObject {
     @Published var userState: UserState
+    @Published var isPaused: Bool = false
     @Published var solved: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
     @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
@@ -196,6 +197,7 @@ class GameViewModel: ObservableObject {
     
     func undo() {
         guard !userState.isSolved else { return }
+        guard !undoManager.empty else { return }
         let currentMove = undoManager.currentItem
         undoManager.undo()
         let lastMove = undoManager.currentItem
@@ -203,6 +205,11 @@ class GameViewModel: ObservableObject {
         if let index = currentMove.selectedCellIndex {
             cellAnimations[index] = .undo
         }
+    }
+    
+    func pauseResume() {
+        isPaused.toggle()
+        timer.toggle()
     }
     
     /// When only one number remains unsolved, auto fill the remaining value
@@ -362,12 +369,16 @@ public struct UndoHistory<A> {
         }
     }
     
+    public var empty: Bool {
+        return history.isEmpty
+    }
+    
     public init(initialValue: A) {
         self.initialValue = initialValue
     }
     
     public mutating func undo() {
-        guard !history.isEmpty else { return }
+        guard !empty else { return }
         history.removeLast()
     }
 }
