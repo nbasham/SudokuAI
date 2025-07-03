@@ -181,15 +181,15 @@ class GameViewModel: ObservableObject {
             if isCorrect && SystemSettings.completeLastNumber {
                 if let remainingNumber = userState.onlyRemainingNumber,
                    SystemSettings.completeLastNumber {
-                    let indexes = userState.indicesForEmptyCells(solutionIs: remainingNumber)
+                    // Using new method to get indices of cells without guesses (nil or notes), not just empty
+                    let indexes = userState.indicesForCellsWithoutGuesses(solutionIs: remainingNumber)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // experimenting with leaving a slight delay before auto complete
                         self.autofill(indexes: indexes, number: remainingNumber) {
                             self.endGame()
                         }
                     }
                 }
-            }
-            if userState.isSolved {
+            } else if userState.isSolved {
                 self.endGame()
             }
         }
@@ -213,6 +213,7 @@ class GameViewModel: ObservableObject {
     }
     
     /// When only one number remains unsolved, auto fill the remaining value
+    /// Uses cells without guesses: cells with value nil or < 0 (notes)
     private func autofill(indexes: [Int], number: Int, _ completion: @escaping ()->()) {
         userState.selectedNumber = nil
         userState.selectedCellIndex = nil
@@ -382,4 +383,3 @@ public struct UndoHistory<A> {
         history.removeLast()
     }
 }
-

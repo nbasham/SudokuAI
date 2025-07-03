@@ -98,6 +98,14 @@ class UserState: ObservableObject, Codable {
         }
     }
     
+    /// Returns indices of cells without a user guess (nil or containing notes), for a given solution number.
+    func indicesForCellsWithoutGuesses(solutionIs number: Int) -> [Int] {
+        boardState.indices.filter { index in
+            let value = boardState[index]
+            return (value == nil || (value ?? 0) < 0) && (puzzle.cells[index] > 9 ? puzzle.cells[index] - 9 : puzzle.cells[index]) == number
+        }
+    }
+    
     func isEditable(index: Int) -> Bool {
         return puzzle.cells[index] <= 9
     }
