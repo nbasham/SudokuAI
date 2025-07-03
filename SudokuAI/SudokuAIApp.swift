@@ -17,6 +17,7 @@ struct SudokuAIApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .padding(0)
         }
     }
 }

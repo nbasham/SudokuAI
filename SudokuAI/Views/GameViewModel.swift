@@ -64,12 +64,14 @@ class GameViewModel: ObservableObject {
 
     init(puzzleId: String) {
         let state = UserState(puzzleId: puzzleId)
+        //  we may need to reload a previously started game
         self.userState = state
         self.undoManager = UndoHistory(initialValue: UndoState(state: state))
         self.timer = GameTimer()
     }
     
     func startGame() {
+        self.undoManager = UndoHistory(initialValue: UndoState(state: userState))
         timer.start { newTime in
             self.userState.elapsed = newTime
         }
@@ -89,6 +91,7 @@ class GameViewModel: ObservableObject {
         self.noteAttributes = Array(repeating: Array(repeating: .none, count: 9), count: 81)
         self.undoManager = UndoHistory(initialValue: UndoState(state: userState))
         self.lastGuess = nil
+        startGame()
     }
     
     func setNote(_ note: Int) {

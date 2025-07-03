@@ -5,29 +5,51 @@ struct GameView: View {
     @EnvironmentObject var viewModel: GameViewModel
     @EnvironmentObject var userState: UserState
     @State private var showSolvedAlert = false
+    @State private var showSolvedSheet = false
     var body: some View {
-        VStack {
-            Spacer()
-            BoardView()
-                .frame(maxWidth: .infinity)
-                .aspectRatio(1, contentMode: .fit)
-            Text("\(Int(userState.elapsed).timerValue)")
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.trailing)
-                .padding(.trailing)
+        GeometryReader { geometry in
+            if geometry.size.width > geometry.size.height {     //  LANDSCAPE
+                HStack(spacing: 0) {
+                    BoardView()
+                        .padding(.top)
+                    VStack {
+                        ProgressView()
+                            .environmentObject(viewModel)
+                            .padding(.top)
+                        HStack {
+                            PickerView(isNotes: false)
+                                .aspectRatio(1, contentMode: .fit)
+                            Spacer(minLength: 48)
+                            PickerView(isNotes: true)
+                                .aspectRatio(1, contentMode: .fit)
+                        }
+                        .padding()
+                    }
+                }
+            } else {     //  PORTRAIT
+                VStack {
+                    Spacer()
+                    BoardView()
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(1, contentMode: .fit)
+                    Text("\(Int(userState.elapsed).timerValue)")
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing)
+                        .padding(.trailing)
 
-            HStack {
-                PickerView(isNotes: false)
-                    .aspectRatio(1, contentMode: .fit)
-                Spacer(minLength: 48)
-                PickerView(isNotes: true)
-                    .aspectRatio(1, contentMode: .fit)
-            }
-            .padding()
+                    HStack {
+                        PickerView(isNotes: false)
+                            .aspectRatio(1, contentMode: .fit)
+                        Spacer(minLength: 48)
+                        PickerView(isNotes: true)
+                            .aspectRatio(1, contentMode: .fit)
+                    }
+                    .padding()
 
-            ProgressView()
-                .environmentObject(viewModel)
-                .padding(.top)
+                    ProgressView()
+                        .environmentObject(viewModel)
+                        .padding(.top)
+                }            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -35,10 +57,16 @@ struct GameView: View {
             }
         }
         .background(Color.white.opacity(0.3))
-        .alert("Puzzle Solved!", isPresented: $viewModel.solved) {
-            Button("OK", role: .cancel) {
-                viewModel.gameOver()
+        .sheet(isPresented: $viewModel.solved) {
+            VStack(spacing: 24) {
+                Text("Puzzle Solved!")
+                    .font(.largeTitle.bold())
+                Button("OK") {
+                    viewModel.gameOver()
+                }
+                .buttonStyle(.borderedProminent)
             }
+            .presentationDetents([.fraction(0.95)])
         }
     }
 }

@@ -37,7 +37,6 @@ struct BoardView: View {
             }
             .frame(width: size, height: size)
         }
-        .padding(8)
     }
 }
 

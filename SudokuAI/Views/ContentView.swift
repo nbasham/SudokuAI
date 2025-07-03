@@ -11,29 +11,31 @@ struct ContentView: View {
     let viewModel = GameViewModel(puzzleId: UUID().uuidString)
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
+        VStack(spacing: 0) {
             GameView()
+        }
                 .environmentObject(viewModel)
                 .environmentObject(viewModel.userState)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("\(viewModel.puzzleTitle)")
-                            .font(.headline)
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Menu {
-                            Button("Undo") {
-                                viewModel.undoManager.undo()
-                                let state = viewModel.undoManager.currentItem
-                                viewModel.userState.applyUndo(state: state)
-                            }
-                            Button("Settings") { /* Settings action */ }
-                        } label: {
-                            Image(systemName: "ellipsis.circle")
-                        }
-                    }
-                }
-        }
+//                .toolbar {
+//                    ToolbarItem(placement: .principal) {
+//                        Text("\(viewModel.puzzleTitle)")
+//                            .font(.headline)
+//                    }
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        Menu {
+//                            Button("Undo") {
+//                                viewModel.undoManager.undo()
+//                                let state = viewModel.undoManager.currentItem
+//                                viewModel.userState.applyUndo(state: state)
+//                            }
+//                            Button("Settings") { /* Settings action */ }
+//                        } label: {
+//                            Image(systemName: "ellipsis.circle")
+//                        }
+//                    }
+//                }
+//        }
     }
 }
 
