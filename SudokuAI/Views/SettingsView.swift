@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    let originalLevel = SystemSettings.level
+    @EnvironmentObject var viewModel: GameViewModel
     @State private var selectedLevel = SystemSettings.level
     @State private var prerelease = SystemSettings.prerelease
     @State private var useSound = SystemSettings.useSound
@@ -49,9 +51,18 @@ struct SettingsView: View {
                     .onChange(of: usageTracking) { _, value in SystemSettings.usageTracking = value }
             }
         }
+        .onAppear {
+            viewModel.undo()
+        }
+        .onDisappear {
+            if selectedLevel != originalLevel {
+                viewModel.gameOver()
+            }
+        }
     }
 }
 
 #Preview {
-    SettingsView()
+    let viewModel = GameViewModel(puzzleId: "1")
+    SettingsView().environmentObject(viewModel)
 }

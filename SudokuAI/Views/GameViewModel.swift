@@ -10,6 +10,8 @@ enum CellAnimationType: Int {
     case complete
     /// The cell animates to indicate it was auto-filled by the system.
     case autoComplete
+    /// The cell animates to indicate it was part of Undo
+    case undo
 }
 
 enum CellAttributeType: Int {
@@ -189,6 +191,17 @@ class GameViewModel: ObservableObject {
             if userState.isSolved {
                 self.endGame()
             }
+        }
+    }
+    
+    func undo() {
+        guard !userState.isSolved else { return }
+        let currentMove = undoManager.currentItem
+        undoManager.undo()
+        let lastMove = undoManager.currentItem
+        userState.applyUndo(state: lastMove)
+        if let index = currentMove.selectedCellIndex {
+            cellAnimations[index] = .undo
         }
     }
     

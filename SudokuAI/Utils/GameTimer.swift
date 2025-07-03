@@ -39,6 +39,9 @@ class GameTimer {
         startTime = Date()
         scheduleTimer()
         isRunning = true
+        pausedTime = 0
+        elapsed = 0
+        wasPausedBySystem = false
     }
 
     func pause() {

@@ -10,9 +10,7 @@ struct ControlView: View {
             Text("\(SystemSettings.level.description)")
             Spacer()
             Button("", systemImage: "arrow.uturn.backward.circle") {
-                viewModel.undoManager.undo()
-                let state = viewModel.undoManager.currentItem
-                viewModel.userState.applyUndo(state: state)
+                viewModel.undo()
             }
             Spacer()
             Button("", systemImage: "gearshape") {

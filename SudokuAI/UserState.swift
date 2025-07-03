@@ -161,6 +161,7 @@ extension UserState {
 extension UserState {
     func reset(toPuzzleId puzzleId: String) {
         self.puzzleId = puzzleId
+        self.elapsed = 0
         for index in 0...80 {
             let puzzleValue = puzzle.cells[index]
             if (puzzleValue > 9) {

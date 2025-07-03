@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CellView: View {
     @State private var scale: CGFloat = 1.0
+    @State private var showUndoEmitter: Bool = false
     @State private var showEmitter: Bool = false
     @State private var rotationY: Double = 0.0
     var cellValue: Int?
@@ -15,10 +16,18 @@ struct CellView: View {
             cellContent
         }
         .overlay(
-            Group { if showEmitter { StarEmitterView(duration: 2 * animationTime).allowsHitTesting(false) } }
+            Group {
+                if showUndoEmitter { UndoEmitterView(duration: 2 * animationTime).allowsHitTesting(false) }
+                if showEmitter { StarEmitterView(duration: 2 * animationTime).allowsHitTesting(false) }
+            }
         )
         .onChange(of: cellAnimation) { _, newValue in
             switch newValue {
+            case .undo:
+                showUndoEmitter = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2 * animationTime) {
+                    showUndoEmitter = false
+                }
             case .guess:
                 runScaleAnimation(to: 2.0, duration: animationTime) {}
             case .autoComplete:
@@ -81,6 +90,34 @@ struct CellView: View {
                 rotationY = 0
                 completion()
             }
+        }
+    }
+}
+
+private struct UndoEmitterView: View {
+    let duration: Double
+    @State private var animating = false
+    // Simple star shape using SF Symbols
+    private let starCount = 8
+    private let colors: [Color] = [.blue, .accentColor]
+
+    var body: some View {
+        ZStack {
+            ForEach(0..<starCount, id: \.self) { i in
+                let angle = Double(i) / Double(starCount) * 2 * .pi
+                let distance: CGFloat = animating ? 42 : 0
+                Image(systemName: "bolt.fill")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(colors[i % colors.count])
+                    .opacity(animating ? 0 : 1)
+                    .offset(x: CGFloat(cos(angle)) * distance, y: CGFloat(sin(angle)) * distance)
+                    .scaleEffect(animating ? 1.2 : 0.3)
+                    .animation(.easeOut(duration: duration).delay(0.03 * Double(i)), value: animating)
+            }
+        }
+        .onAppear {
+            animating = true
         }
     }
 }
