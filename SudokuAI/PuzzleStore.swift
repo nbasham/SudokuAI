@@ -13,11 +13,12 @@ struct PuzzleStore {
         return SudokuPuzzle(id: id, cells: cells)
    }
     
-    static func getPuzzle(id: String, revealCount: Int = 37) -> SudokuPuzzle {
+    static func getPuzzle(id: String) -> SudokuPuzzle {
 //        return dict["3"]! run with almost complete
         if let puzzle = dict[id] {
             return puzzle
         } else {
+            let revealCount = SystemSettings.level.numClues
             let newPuzzle = generatePuzze(id: id, revealCount: revealCount)
             dict[newPuzzle.id] = newPuzzle
             return newPuzzle
@@ -32,7 +33,7 @@ struct PuzzleStore {
     /// The underlying puzzle (if you subtract 9 from any value ≥10) has exactly one solution.
     /// - Parameter clueCount: The number of clues (pre‑filled cells) to leave in the puzzle.
     /// - Returns: An array of 81 integers, each in 1…18, no zeros.
-    static func generateEncodedSudoku(clueCount: Int) -> [Int] {
+    static internal func generateEncodedSudoku(clueCount: Int) -> [Int] {
         // 1) Generate a complete solution
         let solution = generateCompleteSolution()
         

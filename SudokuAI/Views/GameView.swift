@@ -10,8 +10,14 @@ struct GameView: View {
         GeometryReader { geometry in
             if geometry.size.width > geometry.size.height {     //  LANDSCAPE
                 HStack(spacing: 0) {
-                    BoardView()
-                        .padding(.top)
+                    VStack(spacing: 0) {
+                        BoardView()
+                        ControlView()
+                            .environmentObject(viewModel)
+                            .environmentObject(userState)
+                            .padding(.top, 2)
+                    }
+                    .padding(.top)
                     VStack {
                         ProgressView()
                             .environmentObject(viewModel)
@@ -24,7 +30,7 @@ struct GameView: View {
                                 .aspectRatio(1, contentMode: .fit)
                         }
                         .padding()
-                    }
+                   }
                 }
             } else {     //  PORTRAIT
                 VStack {
@@ -32,10 +38,9 @@ struct GameView: View {
                     BoardView()
                         .frame(maxWidth: .infinity)
                         .aspectRatio(1, contentMode: .fit)
-                    Text("\(Int(userState.elapsed).timerValue)")
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.trailing)
-                        .padding(.trailing)
+                    ControlView()
+                        .environmentObject(viewModel)
+                        .environmentObject(userState)
 
                     HStack {
                         PickerView(isNotes: false)
@@ -86,4 +91,5 @@ public extension Int {
     let viewModel = GameViewModel(puzzleId: "1")
     GameView()
         .environmentObject(viewModel)
+        .environmentObject(viewModel.userState)
 }

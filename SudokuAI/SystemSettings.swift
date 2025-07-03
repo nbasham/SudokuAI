@@ -11,6 +11,11 @@ class SystemSettings: NSObject {
         }
     }
     
+    static var level: PuzzleLevel {
+        get { return PuzzleLevel(rawValue: UserDefaults.geti("level")) ?? .easy }
+        set { UserDefaults.save(newValue.rawValue, forKey: "level") }
+    }
+    
     static var prerelease: Bool {
         get { return UserDefaults.getb("prerelease") }
         set { UserDefaults.save(newValue, forKey: "prerelease") }
@@ -62,6 +67,7 @@ class SystemSettings: NSObject {
         #else
             SystemSettings.prerelease = false
         #endif
+        SystemSettings.level = PuzzleLevel.easy
         SystemSettings.showRowColSelector = false
         SystemSettings.completeLastNumber = true
         SystemSettings.useSound = true
