@@ -11,7 +11,7 @@ struct GameOverView: View {
                 Text("Score: \(score.score)")
                 Text("Level: \(PuzzleLevel(rawValue: score.level)!.description)")
             }
-            Text("Average: \(String(format: "%.2f", viewModel.scores.average))")
+            Text("Average: \(String(format: "%.2f", viewModel.scores.levelAverage))")
             Button("OK") {
                 viewModel.gameOver()
             }

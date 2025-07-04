@@ -45,6 +45,15 @@ extension Scores {
 }
 
 extension Array where Element == Score {
+    var levelAverage: Double {
+        guard count > 0 else { return 0 }
+        let level = SystemSettings.level.rawValue
+        let levelScores = self.filter { $0.level == level }
+        return levelScores.average
+    }
+}
+
+extension Array where Element == Score {
     var average: Double {
         guard count > 0 else { return 0 }
         return self.map { Double($0.score) }.reduce(0, +) / Double(count)
