@@ -48,6 +48,7 @@ class GameViewModel: ObservableObject {
     var undoManager: UndoHistory<UndoState>
     var lastGuess: Int?
     let timer: GameTimer
+    var scores: Scores
 
     static var rowIndicesCache: [Int: [Int]] = [:]
     static var colIndicesCache: [Int: [Int]] = [:]
@@ -71,6 +72,8 @@ class GameViewModel: ObservableObject {
         self.userState = state
         self.undoManager = UndoHistory(initialValue: UndoState(state: state))
         self.timer = GameTimer()
+        self.scores = Scores(storage: UserDefaults.standard)
+
     }
     
     func startGame() {
@@ -82,6 +85,8 @@ class GameViewModel: ObservableObject {
     
     func endGame() {
         solved = true
+        let score = Score(id: userState.puzzleId, date: Date(), seconds: Int(userState.elapsed), numIncorrect: 0, level: SystemSettings.level.rawValue, usedColor: false, score: Int(userState.elapsed))
+        scores.add(score)
         timer.stop()
     }
 

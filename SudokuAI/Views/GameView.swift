@@ -36,14 +36,8 @@ struct GameView: View {
         }
         .background(Color.white.opacity(0.3))
         .sheet(isPresented: $viewModel.solved) {
-            VStack(spacing: 24) {
-                Text("Puzzle Solved!")
-                    .font(.largeTitle.bold())
-                Button("OK") {
-                    viewModel.gameOver()
-                }
-                .buttonStyle(.borderedProminent)
-            }
+            GameOverView()
+                .environmentObject(viewModel)
             .presentationDetents([.fraction(0.95)])
         }
     }
