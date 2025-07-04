@@ -110,7 +110,7 @@ class UserState: ObservableObject, Codable {
         return puzzle.cells[index] <= 9
     }
     
-    func applyUndo(state: UndoState) {
+    func applyUndo(state: GameViewModel.UndoState) {
         self.boardState = state.boardState
         self.selectedCellIndex = state.selectedCellIndex
         self.selectedNumber = state.selectedNumber

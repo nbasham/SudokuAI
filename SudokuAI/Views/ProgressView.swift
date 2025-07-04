@@ -68,9 +68,12 @@ struct ProgressView: View {
                         ForEach(0..<3) { col in
                             let subgrid = row * 3 + col
                             Rectangle()
-                                .fill(subgridHasDigit(subgrid: subgrid) ? Color.accentColor.opacity(0.5) : Color.clear)
-                                .border(Color.black.opacity(0.44))
+                                .fill(subgridHasDigit(subgrid: subgrid) ? Color.black.opacity(0.6) : Color.black.opacity(0.25))
+                                .border(Color.white.opacity(0.54))
                                 .aspectRatio(1, contentMode: .fit)
+//                                .fill(subgridHasDigit(subgrid: subgrid) ? Color.accentColor.opacity(0.5) : Color.clear)
+//                                .border(Color.black.opacity(0.44))
+//                                .aspectRatio(1, contentMode: .fit)
                         }
                     }
                 }
@@ -83,6 +86,27 @@ struct ProgressView: View {
     let viewModel = GameViewModel(puzzleId: "1")
     let userState = viewModel.userState
     ProgressView()
+        .environmentObject(viewModel)
+        .environmentObject(userState)
+}
+
+#Preview {
+    let viewModel = GameViewModel(puzzleId: "1")
+    let userState = viewModel.userState
+    ForEach(1...9, id: \.self) { digit in
+        ZStack {
+           RoundedRectangle(cornerRadius: 7).fill(Color.black.opacity(0.125))
+                .frame(width: 84, height: 48)
+            HStack {
+                ProgressView.DigitGrid(digit: digit).padding(.horizontal, 3)
+                    .opacity(0.525)
+                    .frame(width: 44, height: 44)
+                Text("\(digit)")
+                    .font(.title.bold())
+                    .foregroundStyle(Color.black.opacity(0.75))
+            }
+        }
+    }
         .environmentObject(viewModel)
         .environmentObject(userState)
 }

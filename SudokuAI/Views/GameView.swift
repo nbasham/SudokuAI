@@ -38,7 +38,7 @@ struct GameView: View {
         .sheet(isPresented: $viewModel.solved) {
             GameOverView()
                 .environmentObject(viewModel)
-            .presentationDetents([.fraction(0.95)])
+                .presentationDetents([.fraction(0.95)])
         }
     }
 }
@@ -46,7 +46,7 @@ struct GameView: View {
 struct GameViewLandscape: View {
     @EnvironmentObject var viewModel: GameViewModel
     @EnvironmentObject var userState: UserState
-
+    
     var body: some View {
         HStack(spacing: 0) {
             VStack(spacing: 0) {
@@ -58,9 +58,9 @@ struct GameViewLandscape: View {
             }
             .padding(.top)
             VStack {
-                ProgressView()
-                    .environmentObject(viewModel)
-                    .padding(.top)
+                //                ProgressView()
+                //                    .environmentObject(viewModel)
+                //                    .padding(.top)
                 HStack {
                     PickerView(isNotes: false)
                         .aspectRatio(1, contentMode: .fit)
@@ -77,7 +77,7 @@ struct GameViewLandscape: View {
 struct GameViewPortrait: View {
     @EnvironmentObject var viewModel: GameViewModel
     @EnvironmentObject var userState: UserState
-
+    
     var body: some View {
         VStack {
             Spacer()
@@ -87,19 +87,18 @@ struct GameViewPortrait: View {
             ControlView()
                 .environmentObject(viewModel)
                 .environmentObject(userState)
-
-            HStack {
+            
+            HStack(spacing: 16) {
                 PickerView(isNotes: false)
-                    .aspectRatio(1, contentMode: .fit)
-                Spacer(minLength: 48)
+                    .frame(maxWidth: .infinity)
                 PickerView(isNotes: true)
-                    .aspectRatio(1, contentMode: .fit)
+                    .frame(maxWidth: .infinity)
             }
             .padding()
-
-            ProgressView()
-                .environmentObject(viewModel)
-                .padding(.top)
+            
+            //            ProgressView()
+            //                .environmentObject(viewModel)
+            //                .padding(.top)
         }
     }
 }

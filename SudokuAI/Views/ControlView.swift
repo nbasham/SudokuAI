@@ -8,6 +8,8 @@ struct ControlView: View {
     var body: some View {
         HStack(spacing: 0) {
             Text("\(SystemSettings.level.description)")
+                .font(.title2.bold())
+                .foregroundColor(Color(.systemGray4).opacity(0.8))
             Spacer()
             Button("", systemImage: "arrow.uturn.backward.circle") {
                 viewModel.undo()
@@ -24,6 +26,7 @@ struct ControlView: View {
             Spacer()
             Text("\(Int(userState.elapsed).timerValue)")
                 .monospaced()
+                .foregroundColor(Color(.systemGray4).opacity(0.8))
         }
         .padding(.horizontal)
         .padding(.horizontal)

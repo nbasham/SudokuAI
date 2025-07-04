@@ -1,43 +1,6 @@
 import Foundation
 import Combine
 
-enum CellAnimationType: Int {
-    /// No animation is applied to the cell.
-    case none
-    /// The cell animates to indicate a guess was entered.
-    case guess
-    /// The cell animates to show completion of a row, column, grid, or number.
-    case complete
-    /// The cell animates to indicate it was auto-filled by the system.
-    case autoComplete
-    /// The cell animates to indicate it was part of Undo
-    case undo
-}
-
-enum CellAttributeType: Int {
-    /// Default state, no special attribute is applied to the cell.
-    case none
-    /// The cell is marked as having an incorrect guess.
-    case incorrect
-    /// The cell is an initial, given value in the puzzle (not editable).
-    case initial
-}
-
-enum NoteAttributeType: Int {
-    case none, conflicting
-}
-
-struct UndoState {
-    let selectedCellIndex: Int?
-    let selectedNumber: Int?
-    let boardState: [Int?]
-    init(state: UserState) {
-        self.selectedCellIndex = state.selectedCellIndex
-        self.selectedNumber = state.selectedNumber
-        self.boardState = state.boardState
-    }
-}
-
 class GameViewModel: ObservableObject {
     @Published var userState: UserState
     @Published var isPaused: Bool = false
@@ -129,6 +92,9 @@ class GameViewModel: ObservableObject {
         if userState.isSelectionEditable {
             let isCorrect = userState.guess(guess, at: index)
             lastGuess = guess
+            if isCorrect {
+                userState.selectedNumber = guess
+            }
             undoManager.currentItem = UndoState(state: userState)
             cellAttributes[index] = isCorrect ? .none : .incorrect
             cellAnimations[index] = .guess
@@ -359,6 +325,16 @@ class GameViewModel: ObservableObject {
     private func setAnimationForIndices(_ indices: [Int]) {
         for i in indices {
             cellAnimations[i] = .complete
+        }
+    }
+    struct UndoState {
+        let selectedCellIndex: Int?
+        let selectedNumber: Int?
+        let boardState: [Int?]
+        init(state: UserState) {
+            self.selectedCellIndex = state.selectedCellIndex
+            self.selectedNumber = state.selectedNumber
+            self.boardState = state.boardState
         }
     }
 }

@@ -1,5 +1,31 @@
 import SwiftUI
 
+enum CellAnimationType: Int {
+    /// No animation is applied to the cell.
+    case none
+    /// The cell animates to indicate a guess was entered.
+    case guess
+    /// The cell animates to show completion of a row, column, grid, or number.
+    case complete
+    /// The cell animates to indicate it was auto-filled by the system.
+    case autoComplete
+    /// The cell animates to indicate it was part of Undo
+    case undo
+}
+
+enum CellAttributeType: Int {
+    /// Default state, no special attribute is applied to the cell.
+    case none
+    /// The cell is marked as having an incorrect guess.
+    case incorrect
+    /// The cell is an initial, given value in the puzzle (not editable).
+    case initial
+}
+
+enum NoteAttributeType: Int {
+    case none, conflicting
+}
+
 struct CellView: View {
     @State private var scale: CGFloat = 1.0
     @State private var showUndoEmitter: Bool = false
