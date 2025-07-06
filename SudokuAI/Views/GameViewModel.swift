@@ -43,6 +43,8 @@ class GameViewModel: ObservableObject {
         timer.start { newTime in
             self.userState.elapsed = newTime
         }
+        userState.selectedNumber = userState.mostCommonNumber()
+        lastGuess = userState.selectedNumber
     }
     
     func endGame() {
@@ -137,8 +139,8 @@ class GameViewModel: ObservableObject {
             if isNumberComplete(guess) {
                 setAnimationForIndices(indicesForNumber(guess))
                 if userState.selectedNumber == guess {
-                    userState.selectedNumber = nil
-                    lastGuess = nil
+                    userState.selectedNumber = userState.mostCommonNumber()
+                    lastGuess = userState.selectedNumber
                 }
                 if lastGuess == guess {
                     lastGuess = nil
@@ -307,7 +309,7 @@ class GameViewModel: ObservableObject {
         return true
     }
     
-    private func isNumberComplete(_ number: Int) -> Bool {
+    func isNumberComplete(_ number: Int) -> Bool {
         // Count the number of times `number` appears as the solution in the puzzle
         let indices = userState.puzzle.cells.enumerated().compactMap { (idx, cell) -> Int? in
             let solution = cell > 9 ? cell - 9 : cell
@@ -327,6 +329,7 @@ class GameViewModel: ObservableObject {
             cellAnimations[i] = .complete
         }
     }
+
     struct UndoState {
         let selectedCellIndex: Int?
         let selectedNumber: Int?

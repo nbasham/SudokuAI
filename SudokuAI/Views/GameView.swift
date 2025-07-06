@@ -60,6 +60,7 @@ struct GameViewLandscape: View {
             VStack {
                 ProgressView()
                     .environmentObject(viewModel)
+                    .environmentObject(userState)
                     .padding(.top)
                 HStack {
                     PickerView(isNotes: false)
@@ -97,6 +98,7 @@ struct GameViewPortrait: View {
             .padding()
             ProgressView()
                 .environmentObject(viewModel)
+                .environmentObject(userState)
                 .padding(.top)
         }
     }

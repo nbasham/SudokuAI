@@ -55,6 +55,27 @@ class UserState: ObservableObject, Codable {
         }
     }
     
+    func mostCommonNumber() -> Int? {
+        var counts = [Int: Int]()
+
+        for value in boardState {
+            if let n = value {
+                counts[n, default: 0] += 1
+            }
+        }
+
+        // Exclude numbers that appear 9 times (i.e., completed)
+        counts = counts.filter { $0.value < 9 }
+
+        guard counts.count > 1 else { return nil }
+
+        let maxCount = counts.values.max()!
+        return counts
+            .filter { $0.value == maxCount }
+            .map(\.key)
+            .min()
+    }
+
     var firstEditableCellIndex: Int? {
         puzzle.cells.firstIndex { $0 <= 9 }
     }
@@ -177,7 +198,6 @@ extension UserState {
             } else {
                 self.boardState[index] = nil
             }
-            self.selectedCellIndex = firstEditableCellIndex
             self.selectedCellIndex = nil
             self.selectedNumber = nil
         }
