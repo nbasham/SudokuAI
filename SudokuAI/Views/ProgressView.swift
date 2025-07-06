@@ -30,7 +30,7 @@ struct ProgressView: View {
         var body: some View {
             Text("\(digit)")
                 .font(.callout.bold())
-                .foregroundStyle(Color.accentColor.opacity(0.5))
+                .foregroundStyle(Color(.systemGray4).opacity(0.5))
         }
     }
 
@@ -68,7 +68,7 @@ struct ProgressView: View {
                         ForEach(0..<3) { col in
                             let subgrid = row * 3 + col
                             Rectangle()
-                                .fill(subgridHasDigit(subgrid: subgrid) ? Color.black.opacity(0.6) : Color.black.opacity(0.25))
+                                .fill(subgridHasDigit(subgrid: subgrid) ? (viewModel.userState.selectedNumber == subgrid ? Color.accentColor.opacity(0.5) : Color.black.opacity(0.6)) : Color.black.opacity(0.25))
                                 .border(Color.white.opacity(0.54))
                                 .aspectRatio(1, contentMode: .fit)
 //                                .fill(subgridHasDigit(subgrid: subgrid) ? Color.accentColor.opacity(0.5) : Color.clear)

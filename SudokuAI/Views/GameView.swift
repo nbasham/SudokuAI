@@ -58,9 +58,9 @@ struct GameViewLandscape: View {
             }
             .padding(.top)
             VStack {
-                //                ProgressView()
-                //                    .environmentObject(viewModel)
-                //                    .padding(.top)
+                ProgressView()
+                    .environmentObject(viewModel)
+                    .padding(.top)
                 HStack {
                     PickerView(isNotes: false)
                         .aspectRatio(1, contentMode: .fit)
@@ -95,10 +95,9 @@ struct GameViewPortrait: View {
                     .frame(maxWidth: .infinity)
             }
             .padding()
-            
-            //            ProgressView()
-            //                .environmentObject(viewModel)
-            //                .padding(.top)
+            ProgressView()
+                .environmentObject(viewModel)
+                .padding(.top)
         }
     }
 }

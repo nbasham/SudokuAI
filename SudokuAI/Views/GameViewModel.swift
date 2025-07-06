@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 import Combine
 
 class GameViewModel: ObservableObject {
@@ -36,7 +36,6 @@ class GameViewModel: ObservableObject {
         self.undoManager = UndoHistory(initialValue: UndoState(state: state))
         self.timer = GameTimer()
         self.scores = Scores(storage: UserDefaults.standard)
-
     }
     
     func startGame() {
@@ -67,6 +66,7 @@ class GameViewModel: ObservableObject {
     
     func setNote(_ note: Int) {
         guard let index = userState.selectedCellIndex else { return }
+        cellAttributes[index] = .none
         userState.note(note, at: index)
         lastGuess = -note
         undoManager.currentItem = UndoState(state: userState)

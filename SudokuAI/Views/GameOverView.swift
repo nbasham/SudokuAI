@@ -12,7 +12,7 @@ struct GameOverView: View {
                 Text("Level: \(PuzzleLevel(rawValue: score.level)!.description)")
             }
             Text("Average: \(String(format: "%.2f", viewModel.scores.levelAverage))")
-            Button("OK") {
+            Button("New Game") {
                 viewModel.gameOver()
             }
             .buttonStyle(.borderedProminent)
