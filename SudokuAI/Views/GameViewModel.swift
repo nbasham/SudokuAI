@@ -5,6 +5,7 @@ class GameViewModel: ObservableObject {
     @Published var userState: UserState
     @Published var isPaused: Bool = false
     @Published var solved: Bool = false
+    @Published var animatingLastNumber: Bool = false
     @Published var cellAnimations: [CellAnimationType] = Array(repeating: CellAnimationType.none, count: 81)
     @Published var cellAttributes: [CellAttributeType] = Array(repeating: CellAttributeType.none, count: 81)
     @Published var noteAttributes: [[NoteAttributeType]] = Array(repeating: Array(repeating: NoteAttributeType.none, count: 9), count: 81)
@@ -45,10 +46,12 @@ class GameViewModel: ObservableObject {
         }
         userState.selectedNumber = userState.mostCommonNumber()
         lastGuess = userState.selectedNumber
+        animatingLastNumber = false
     }
     
     func endGame() {
         solved = true
+        animatingLastNumber = false
         let score = Score(id: userState.puzzleId, date: Date(), seconds: Int(userState.elapsed), numIncorrect: 0, level: SystemSettings.level.rawValue, usedColor: false, score: Int(userState.elapsed))
         scores.add(score)
         timer.stop()
@@ -63,6 +66,7 @@ class GameViewModel: ObservableObject {
         self.noteAttributes = Array(repeating: Array(repeating: .none, count: 9), count: 81)
         self.undoManager = UndoHistory(initialValue: UndoState(state: userState))
         self.lastGuess = nil
+        self.animatingLastNumber = false
         startGame()
     }
     
@@ -92,13 +96,16 @@ class GameViewModel: ObservableObject {
         guard !solved else { return }
         guard let index = userState.selectedCellIndex else { return }
         if userState.isSelectionEditable {
+            //  check toggling before setting the guess
+            let toggling = userState.boardState[index] == guess
             let isCorrect = userState.guess(guess, at: index)
             lastGuess = guess
             if isCorrect {
                 userState.selectedNumber = guess
             }
             undoManager.currentItem = UndoState(state: userState)
-            cellAttributes[index] = isCorrect ? .none : .incorrect
+            //  if we're toggling cell should clear incorrect
+            cellAttributes[index] = (isCorrect || toggling) ? .none : .incorrect
             cellAnimations[index] = .guess
             
             // Remove notes of this number from grid, row, and col
@@ -156,6 +163,7 @@ class GameViewModel: ObservableObject {
                    SystemSettings.completeLastNumber {
                     // Using new method to get indices of cells without guesses (nil or notes), not just empty
                     let indexes = userState.indicesForCellsWithoutGuesses(solutionIs: remainingNumber)
+                    self.animatingLastNumber = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // experimenting with leaving a slight delay before auto complete
                         self.autofill(indexes: indexes, number: remainingNumber) {
                             self.endGame()

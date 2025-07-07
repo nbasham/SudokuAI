@@ -11,12 +11,13 @@ struct GameOverView: View {
                 Text("Score: \(score.score)")
                 Text("Level: \(PuzzleLevel(rawValue: score.level)!.description)")
             }
-            Text("Average: \(String(format: "%.2f", viewModel.scores.levelAverage))")
+            Text("Average \(SystemSettings.level.description.lowercased()): \(String(format: "%.2f", viewModel.scores.levelAverage))")
             Button("New Game") {
                 viewModel.gameOver()
             }
             .buttonStyle(.borderedProminent)
         }
+        .font(.headline).opacity(0.85)
     }
 }
 

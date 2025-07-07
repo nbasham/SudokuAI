@@ -11,17 +11,22 @@ struct ControlView: View {
                 .font(.title2.bold())
                 .foregroundColor(Color(.systemGray4).opacity(0.8))
             Spacer()
-            Button("", systemImage: "arrow.uturn.backward.circle") {
-                viewModel.undo()
-            }
-            Spacer()
-            Button("", systemImage: viewModel.isPaused ? "play.circle" : "pause.circle") {
-                viewModel.pauseResume()
-            }
-            Spacer()
-            Button("", systemImage: "gearshape") {
-                viewModel.pauseResume()
-                showSettings.toggle()
+            if viewModel.animatingLastNumber {
+                Text("Last Number")
+                    .font(.title2.bold())
+            } else {
+                Button("", systemImage: "arrow.uturn.backward.circle") {
+                    viewModel.undo()
+                }
+                Spacer()
+                Button("", systemImage: viewModel.isPaused ? "play.circle" : "pause.circle") {
+                    viewModel.pauseResume()
+                }
+                Spacer()
+                Button("", systemImage: "gearshape") {
+                    viewModel.pauseResume()
+                    showSettings.toggle()
+                }
             }
             Spacer()
             Text("\(Int(userState.elapsed).timerValue)")

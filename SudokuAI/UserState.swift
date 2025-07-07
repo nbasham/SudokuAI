@@ -54,7 +54,8 @@ class UserState: ObservableObject, Codable {
             }
         }
     }
-    
+
+    /// Find the best guess for the number to select next. Eventually, this should consider notes but for now the logic is simple to see how it plays.
     func mostCommonNumber() -> Int? {
         var counts = [Int: Int]()
 

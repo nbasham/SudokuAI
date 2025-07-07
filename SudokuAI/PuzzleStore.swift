@@ -14,7 +14,7 @@ struct PuzzleStore {
    }
     
     static func getPuzzle(id: String) -> SudokuPuzzle {
-//        return dict["3"]! run with almost complete
+//        return dict["3"]! /* run with almost complete */
         if let puzzle = dict[id] {
             return puzzle
         } else {
