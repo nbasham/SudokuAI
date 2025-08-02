@@ -7,14 +7,14 @@ struct PuzzleStore {
         //   almost complete == 3
         "3": SudokuPuzzle(id: "3", csv: "18,14,11,12,10,16,15,17,13,17,15,16,14,13,18,11,12,10,10,13,12,8,15,11,14,16,18,16,18,15,10,12,8,13,14,11,11,17,14,16,18,13,12,10,15,13,12,10,11,14,15,16,18,8,12,7,17,15,11,10,18,13,14,14,11,18,13,8,12,10,15,16,15,10,13,18,16,14,8,11,12")
     ]
-
+    
     static func generatePuzze(id: String, revealCount: Int = 37) -> SudokuPuzzle {
         let cells = generateEncodedSudoku(clueCount: revealCount)
         return SudokuPuzzle(id: id, cells: cells)
-   }
+    }
     
     static func getPuzzle(id: String) -> SudokuPuzzle {
-//        return dict["3"]! /* run with almost complete */
+        //        return dict["3"]! /* run with almost complete */
         if let puzzle = dict[id] {
             return puzzle
         } else {

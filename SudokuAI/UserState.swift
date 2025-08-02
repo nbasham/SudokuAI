@@ -18,7 +18,7 @@ class UserState: ObservableObject, Codable {
         case elapsed
         case boardState
     }
-
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         puzzleId = try container.decode(SudokuPuzzle.ID.self, forKey: .puzzleId)
@@ -27,7 +27,7 @@ class UserState: ObservableObject, Codable {
         elapsed = try container.decode(Double.self, forKey: .elapsed)
         boardState = try container.decode([Int?].self, forKey: .boardState)
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(puzzleId, forKey: .puzzleId)
@@ -54,29 +54,29 @@ class UserState: ObservableObject, Codable {
             }
         }
     }
-
+    
     /// Find the best guess for the number to select next. Eventually, this should consider notes but for now the logic is simple to see how it plays.
     func mostCommonNumber() -> Int? {
         var counts = [Int: Int]()
-
+        
         for value in boardState {
             if let n = value {
                 counts[n, default: 0] += 1
             }
         }
-
+        
         // Exclude numbers that appear 9 times (i.e., completed)
         counts = counts.filter { $0.value < 9 }
-
+        
         guard counts.count > 1 else { return nil }
-
+        
         let maxCount = counts.values.max()!
         return counts
             .filter { $0.value == maxCount }
             .map(\.key)
             .min()
     }
-
+    
     var firstEditableCellIndex: Int? {
         puzzle.cells.firstIndex { $0 <= 9 }
     }
@@ -137,7 +137,7 @@ class UserState: ObservableObject, Codable {
         self.selectedCellIndex = state.selectedCellIndex
         self.selectedNumber = state.selectedNumber
     }
-
+    
     private func updateCell(_ index: Int, with value: Int?) {
         guard index >= 0 && index < 81 else { return }
         boardState[index] = value
@@ -162,9 +162,9 @@ class UserState: ObservableObject, Codable {
     
     internal func note(_ number: Int, at index: Int) {
         guard index >= 0 && index < 81 else {
-                print("ERROR: Invalid index passed to note(): \(index)")
-                return
-            }
+            print("ERROR: Invalid index passed to note(): \(index)")
+            return
+        }
         guard number >= 1 && number <= 9 else {
             print("ERROR: Invalid number passed to note(): \(number)")
             return

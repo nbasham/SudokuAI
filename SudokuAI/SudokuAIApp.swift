@@ -13,7 +13,7 @@ struct SudokuAIApp: App {
     init() {
         SystemSettings.performFirstLaunchSetupIfNeeded()
     }
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

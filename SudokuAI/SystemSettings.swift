@@ -10,17 +10,17 @@ class SystemSettings: NSObject {
             UserDefaults.standard.set(true, forKey: "setDefaultsHasLaunchedBefore")
         }
     }
-    
+
     static var level: PuzzleLevel {
         get { return PuzzleLevel(rawValue: UserDefaults.geti("level")) ?? .easy }
         set { UserDefaults.save(newValue.rawValue, forKey: "level") }
     }
-    
+
     static var prerelease: Bool {
         get { return UserDefaults.getb("prerelease") }
         set { UserDefaults.save(newValue, forKey: "prerelease") }
     }
-    
+
     static var useSound: Bool {
         get { return UserDefaults.getb("useSound") }
         set { UserDefaults.save(newValue, forKey: "useSound") }
@@ -30,7 +30,7 @@ class SystemSettings: NSObject {
         get { return UserDefaults.getb("showIncorrect") }
         set { UserDefaults.save(newValue, forKey: "showIncorrect") }
     }
-    
+
     static var keyboardSwapSides: Bool {
         get { return UserDefaults.getb("keyboardSwapSides") }
         set { UserDefaults.save(newValue, forKey: "keyboardSwapSides") }
@@ -62,11 +62,11 @@ class SystemSettings: NSObject {
     }
 
     static func setDefaults() {
-        #if DEBUG
-            SystemSettings.prerelease = true
-        #else
-            SystemSettings.prerelease = false
-        #endif
+#if DEBUG
+        SystemSettings.prerelease = true
+#else
+        SystemSettings.prerelease = false
+#endif
         SystemSettings.level = PuzzleLevel.easy
         SystemSettings.showRowColSelector = false
         SystemSettings.completeLastNumber = true
