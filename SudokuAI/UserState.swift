@@ -55,8 +55,27 @@ class UserState: ObservableObject, Codable {
         }
     }
     
+    func improvedNumberSuggestion() -> Int? {
+        var candidates: [(Int, Int)] = [] // (number, missingCount)
+        for number in 1...9 {
+            let solutionIndices = puzzle.cells.indices.filter {
+                let solutionValue = puzzle.cells[$0] > 9 ? puzzle.cells[$0] - 9 : puzzle.cells[$0]
+                return solutionValue == number
+            }
+            let solvedCount = solutionIndices.filter { idx in
+                boardState[idx] == number
+            }.count
+            let missingCount = solutionIndices.count - solvedCount
+            if missingCount == 0 { continue }
+            candidates.append((number, missingCount))
+        }
+        // Pick the candidate with the fewest missing solution cells; break ties by preferring highest number
+        return candidates.sorted { $0.1 == $1.1 ? $0.0 > $1.0 : $0.1 < $1.1 }.first?.0
+    }
+
     /// Find the best guess for the number to select next. Eventually, this should consider notes but for now the logic is simple to see how it plays.
     func mostCommonNumber() -> Int? {
+        return improvedNumberSuggestion()
         var counts = [Int: Int]()
         
         for value in boardState {
