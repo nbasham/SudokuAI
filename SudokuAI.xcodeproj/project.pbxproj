@@ -19,6 +19,7 @@
 /* Begin PBXFileReference section */
 		20224D892DFF8BDC001D86B1 /* SudokuAITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SudokuAITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20F280EF2DF79A90001F8CC3 /* SudokuDoh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SudokuDoh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20F779F82E42E97C00832484 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -55,6 +56,7 @@
 		20F280E62DF79A90001F8CC3 = {
 			isa = PBXGroup;
 			children = (
+				20F779F82E42E97C00832484 /* README.md */,
 				20F280F12DF79A90001F8CC3 /* SudokuAI */,
 				20224D8A2DFF8BDC001D86B1 /* SudokuAITests */,
 				20F280F02DF79A90001F8CC3 /* Products */,

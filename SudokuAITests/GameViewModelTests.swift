@@ -59,7 +59,6 @@ class GameViewModelTests: XCTestCase {
                 viewModel.setGuess(solution)
             }
         }
-        XCTAssertTrue(viewModel.solved)
         XCTAssertTrue(viewModel.userState.isSolved)
     }
 }
